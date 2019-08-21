@@ -2,25 +2,26 @@ DROP DATABASE IF EXISTS airbnb;
 
 CREATE DATABASE airbnb;
 
-USE DATABASE airbnb;
+USE airbnb;
 
 CREATE TABLE homestays (
   id INTEGER AUTO_INCREMENT,
   price INTEGER,
   max_guests INTEGER,
+  cleaning_fee INTEGER,
+  service_fee INTEGER,
+  occupancy_fee INTEGER,
   PRIMARY KEY (id)
 );
 
 CREATE TABLE reservations (
   id INTEGER AUTO_INCREMENT,
+  homestay_id INTEGER,
   start_date DATE,
-  end_date DATA,
+  end_date DATE,
   number_of_guests INTEGER,
-  cleaning_fee INTEGER,
-  service_fee INTEGER,
-  occupancy_fee INTEGER,
   PRIMARY KEY (id),
-  FOREIGN KEY (id)
+  FOREIGN KEY (homestay_id)
     REFERENCES homestays(id)
     ON DELETE CASCADE
 );
@@ -33,7 +34,7 @@ CREATE TABLE page_views (
   FOREIGN KEY (homestay_id)
     REFERENCES homestays(id)
     ON DELETE CASCADE
-)
+);
 
 CREATE TABLE reviews (
   id INTEGER AUTO_INCREMENT,
