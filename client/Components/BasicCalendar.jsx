@@ -12,6 +12,7 @@ class BasicCalendar extends React.Component {
       year: props.year,
       month: props.month,
       calendar: this.getCalendar(props.year, props.month),
+      homestayId: props.homestayId,
     };
   }
 
