@@ -8,7 +8,9 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "build": "npx webpack -w"
+    "build": "npx webpack -w",
+    "rebuildDB": "mysql -u root -p <schema.sql",
+    "seed": "node seed.js"
   },
   "dependencies": {
     "express": "^4.17.1",
