@@ -7,6 +7,15 @@ function Month(props) {
   return (
     <table>
       <tbody>
+        <tr>
+          <td style={{}}>Su</td>
+          <td>Mo</td>
+          <td>Tu</td>
+          <td>We</td>
+          <td>Th</td>
+          <td>Fr</td>
+          <td>Sa</td>
+        </tr>
         {/* create table row for each week */}
         {calendar.map((week) => (
           <tr>

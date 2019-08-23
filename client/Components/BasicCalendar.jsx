@@ -36,11 +36,58 @@ class BasicCalendar extends React.Component {
           reservedDays.push(data[i].day);
         }
         const calendar = this.getCalendar(year, month, reservedDays);
-        this.setState({
-          month,
-          year,
-          calendar,
-        });
+
+        const { type } = this.props;
+        if (type === 'checkout') {
+          let next = true;
+          for (let w = 0; w < calendar.length; w += 1) {
+            for (let d = 0; d < calendar[w].length; d += 1) {
+              const temp = calendar[w][d].valid;
+              calendar[w][d].valid = next;
+              next = temp;
+            }
+          }
+        }
+
+        if (type === 'checkout') {
+        // Get last month
+          const pastMonth = (month === 0) ? 11 : month;
+          const pastYear = (month === 0) ? (year - 1) : year;
+
+          Axios.get('/reservations', {
+            header: {
+              'Content-Type': 'application/json',
+            },
+            params: {
+              homestayId,
+              month: pastMonth,
+              year: pastYear,
+            },
+          })
+            .then((checkoutData) => {
+              const lastDayOfLastMonth = new Date(year, month, 0).getDate();
+
+              if (checkoutData.data.length && checkoutData.data[checkoutData.data.length - 1].day === lastDayOfLastMonth) {
+                for (let d = 0; d < calendar[0].length; d += 1) {
+                  if (calendar[0][d].number === '1') {
+                    calendar[0][d].valid = false;
+                  }
+                }
+              }
+
+              this.setState({
+                month,
+                year,
+                calendar,
+              });
+            });
+        } else {
+          this.setState({
+            month,
+            year,
+            calendar,
+          });
+        }
       });
   }
 
@@ -158,6 +205,7 @@ BasicCalendar.propTypes = {
   year: PropTypes.number.isRequired,
   month: PropTypes.number.isRequired,
   homestayId: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 
