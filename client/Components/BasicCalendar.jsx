@@ -2,6 +2,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Axios from 'axios';
 import Month from './Month';
 
 class BasicCalendar extends React.Component {
@@ -11,13 +12,40 @@ class BasicCalendar extends React.Component {
     this.state = {
       year: props.year,
       month: props.month,
-      calendar: this.getCalendar(props.year, props.month),
-      homestayId: props.homestayId,
+      calendar: this.getCalendar(props.year, props.month, []),
     };
+
+    this.getLiveCalendar(props.year, props.month, props.homestayId);
+  }
+
+  getLiveCalendar(year, month, homestayId) {
+    Axios.get('/reservations', {
+      header: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        homestayId,
+        month: (month + 1),
+        year,
+      },
+    })
+      .then((results) => {
+        const { data } = results;
+        const reservedDays = [];
+        for (let i = 0; i < data.length; i += 1) {
+          reservedDays.push(data[i].day);
+        }
+        const calendar = this.getCalendar(year, month, reservedDays);
+        this.setState({
+          month,
+          year,
+          calendar,
+        });
+      });
   }
 
   // Get matrix of calendar based on year/month
-  getCalendar(year, month) {
+  getCalendar(year, month, reservedDays) {
     // Check to see which day of the week the first day of the month stars at
     // (so we know how many empty squares to lead with)
     const daysInMonth = new Date((month >= 12) ? year + 1 : year, (month >= 12) ? 0 : month + 1, 0).getDate();
@@ -36,7 +64,12 @@ class BasicCalendar extends React.Component {
       }
 
       // Check to see if the date is a past date
-      const isValid = this.isPastDate(year, month, i);
+      let isValid = this.isPastDate(year, month, i);
+
+      if (reservedDays.includes(i)) {
+        isValid = false;
+      }
+
       week.push({ number: `${i}`, valid: isValid });
     }
 
@@ -50,11 +83,8 @@ class BasicCalendar extends React.Component {
   }
 
   updateCalendar(year, month) {
-    this.setState({
-      month,
-      year,
-      calendar: this.getCalendar(year, month),
-    });
+    const { homestayId } = this.props;
+    this.getLiveCalendar(year, month, homestayId);
   }
 
   // Button function to go to the NEXT month
@@ -127,6 +157,7 @@ class BasicCalendar extends React.Component {
 BasicCalendar.propTypes = {
   year: PropTypes.number.isRequired,
   month: PropTypes.number.isRequired,
+  homestayId: PropTypes.number.isRequired,
 };
 
 

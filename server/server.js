@@ -1,32 +1,34 @@
 const express = require('express');
-const path = require('path');
+
 const app = express();
 const port = 3000;
-const db = require('../dbHelper/serverDBHelper')
+const db = require('../dbHelper/serverDBHelper');
 
 app.use(express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-//FORMAT: /homestay/?id=[homestay_id]
-//SAMPLE: http://localhost:3000/homestay/?id=1
+// FORMAT: /homestay/?id=[homestay_id]
+// SAMPLE: http://localhost:3000/homestay/?id=1
 app.get('/homestay', (req, res) => {
-  let homestayId = req.query.id;
+  const homestayId = req.query.id;
   db.getHomestayById(homestayId)
-  .then(data => {
-    res.json(data);
-  })
-})
+    .then((data) => {
+      res.json(data);
+    });
+});
 
-//FORMAT: reservations/?id=[homestay_id]&month=[month as int]
-//SAMPLE: http://localhost:3000/reservations/?id=2&month=10
+// FORMAT: reservations/?id=[homestay_id]&month=[month as int]
+// SAMPLE: http://localhost:3000/reservations/?id=2&month=10
 app.get('/reservations', (req, res) => {
-  let homestayId = req.query.id;
-  let month = req.query.month;
-  db.getReservationsByMonth(homestayId, month)
-  .then(data => {
-    res.json(data);
-  })
-})
+  const { month, homestayId, year } = req.query;
+  db.getReservationDaysByMonth(homestayId, month, year)
+    .then((data) => {
+      res.json(data);
+    });
+});
 
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log('listening on port:', port);
-})
+});
