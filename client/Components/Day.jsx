@@ -1,32 +1,103 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class Day extends React.Component {
-
   constructor(props) {
     super(props);
-
     this.state = {
       number: props.number,
-      valid: props.valid
+      valid: props.valid,
+      style: props.style,
+    };
+  }
+
+  componentDidMount() {
+    const style = {};
+
+    const { valid, number } = this.props;
+    if (!valid) {
+      style.textDecoration = 'line-through';
+      style.color = 'lightgrey';
+    } else {
+      style.textDecoration = 'none';
+      style.color = 'black';
     }
 
-    this.style = {};
-
-    if (!this.state.valid) {
-      this.style["text-decoration"] = "line-through";
-      this.style["color"] = "lightgrey";
+    if (number === '') {
+      style.border = 'none';
+    } else {
+      style.boder = 'solid lightgrey';
     }
 
-    if (this.state.number === '') {
-      this.style["border"] = "none"
+    this.setState({
+      number,
+      valid,
+      style,
+    });
+  }
+
+  // Update component if props change
+  componentDidUpdate(prevProps) {
+    const style = {};
+
+    const { valid, number } = this.props;
+    if (!valid) {
+      style.textDecoration = 'line-through';
+      style.color = 'lightgrey';
+    } else {
+      style.textDecoration = 'none';
+      style.color = 'black';
     }
+
+    if (number === '') {
+      style.border = 'none';
+    } else {
+      style.boder = 'solid lightgrey';
+    }
+
+    if (prevProps.number !== number || prevProps.valid !== valid) {
+      this.setTheState(number, valid, style);
+    }
+  }
+
+  setTheState(number, valid, style) {
+    this.setState({
+      number,
+      valid,
+      style,
+    });
   }
 
   render() {
+    const { valid, number, style } = this.state;
+
     return (
-      <td style={this.style} class={this.state.valid ? 'hoverable' : ''}>{this.props.number ? this.props.number : ''}</td>
+      <td style={style} className={valid ? 'hoverable' : ''}>{number || ''}</td>
     );
   }
 }
+
+Day.propTypes = {
+  number: PropTypes.string.isRequired,
+  valid: PropTypes.bool.isRequired,
+  style: PropTypes.shape(
+    {
+      border: PropTypes.string,
+      color: PropTypes.string,
+      textDecoration: PropTypes.string,
+    },
+  ),
+};
+
+Day.defaultProps = {
+  style: PropTypes.shape(
+    {
+      border: '',
+      color: '',
+      textDecoration: '',
+    },
+  ),
+};
+
 
 export default Day;

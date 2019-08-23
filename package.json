@@ -1,5 +1,11 @@
 {
   "name": "reservations",
+  "jest": {
+    "verbose": true,
+    "setupFilesAfterEnv": [
+      "./tests/setupTests.js"
+    ]
+  },
   "description": "> Project description",
   "private": true,
   "author": "",
@@ -11,10 +17,13 @@
     "build": "npx webpack -w"
   },
   "dependencies": {
+    "babel-jest": "^24.9.0",
     "express": "^4.17.1",
     "faker": "^4.1.0",
+    "jest": "^24.9.0",
     "mysql2": "^1.6.5",
     "path": "^0.12.7",
+    "prop-types": "^15.7.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0"
   },
@@ -22,7 +31,10 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "eslint": "^6.2.1",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-config-hackreactor": "git://github.com/reactorcore/eslint-config-hackreactor.git",
