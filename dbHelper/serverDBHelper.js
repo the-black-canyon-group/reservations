@@ -1,9 +1,11 @@
+const knexDB = require('knex');
 const config = require('../config/config.js');
-const knex = require('knex')({
+
+const knex = knexDB({
   client: 'mysql2',
-  connection: config
+  connection: config,
 });
-//Sample config file:
+// Sample config file:
 // module.exports = {
 //   host: 'localhost',
 //   user: 'root',
@@ -11,23 +13,15 @@ const knex = require('knex')({
 //   database: 'reservations',
 // };
 
-var getReservationsByMonth = (id, month) => {
-  return knex('reservations').select()
-  .whereRaw('homestay_id = ? AND Month(date) = ?', [id, month])
-  .then(data => {
-    return data;
-  })
-}
+const getReservationDaysByMonth = (id, month, year) => knex('reservations').select(knex.raw('DAY(date) as day'))
+  .whereRaw('homestay_id = ? AND Month(date) = ? AND Year(date) = ?', [id, month, year])
+  .then((data) => data);
 
-var getHomestayById = (id) => {
-  return knex('homestays').select()
+const getHomestayById = (id) => knex('homestays').select()
   .where('id', id)
-  .then(data => {
-    return data;
-  })
-}
+  .then((data) => data);
 
 module.exports = {
-  getReservationsByMonth,
+  getReservationDaysByMonth,
   getHomestayById,
-}
+};
