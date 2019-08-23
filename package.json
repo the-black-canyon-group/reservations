@@ -14,7 +14,9 @@
     "node": ">=6.13.0"
   },
   "scripts": {
-    "build": "npx webpack -w"
+    "build": "npx webpack -w",
+    "rebuildDB": "mysql -u root -p <schema.sql",
+    "seed": "node seed.js"
   },
   "dependencies": {
     "babel-jest": "^24.9.0",
