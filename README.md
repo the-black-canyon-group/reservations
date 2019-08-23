@@ -1,6 +1,6 @@
-# Project Name
+# Reservations Calendar
 
-> Project description
+> Reservations Calendar UI system where views are able to view reservation availability and set reservations for homestays.
 
 ## Related Projects
 
