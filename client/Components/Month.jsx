@@ -7,9 +7,11 @@ function Month(props) {
   return (
     <table>
       <tbody>
+        {/* create table row for each week */}
         {calendar.map((week) => (
           <tr>
             {week.map((day) => (
+              // create day-component/table-cell for each day
               <Day number={day.number} valid={day.valid} style={{}} />
             ))}
           </tr>

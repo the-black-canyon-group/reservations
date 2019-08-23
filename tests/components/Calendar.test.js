@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable no-undef */
 import React from 'react';
-import { shallow, mount, render } from 'enzyme';
+import { shallow /* , mount, render */ } from 'enzyme';
 import Day from '../../client/Components/Day';
 import Month from '../../client/Components/Month';
 import BasicCalendar from '../../client/Components/BasicCalendar';
