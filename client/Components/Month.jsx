@@ -8,7 +8,7 @@ function Month(props) {
     <table>
       <tbody>
         <tr>
-          <td style={{}}>Su</td>
+          <td>Su</td>
           <td>Mo</td>
           <td>Tu</td>
           <td>We</td>
