@@ -51,7 +51,7 @@ describe('BasicCalendar', () => {
     homestayId: 1,
   };
 
-  it('should render month component for checkin', () => {
+  it('should render month component for check-in', () => {
     const {
       month, homestayId,
     } = basicCalendarInstance;
@@ -62,7 +62,7 @@ describe('BasicCalendar', () => {
     axios.get.mockImplementation(() => Promise.resolve({ data: [{ day: 31 }] }));
 
     const wrapper = shallow(<BasicCalendar year={year} month={month} homestayId={homestayId} type="checkin" />);
-    console.log(wrapper.instance().state.calendar);
+    console.log(wrapper.instance());
     expect(wrapper.find(Month).length).toBe(1);
   });
 

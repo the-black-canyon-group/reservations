@@ -12,7 +12,7 @@ class BasicCalendar extends React.Component {
     this.state = {
       year: props.year,
       month: props.month,
-      calendar: [],
+      calendar: this.getCalendar(props.year, props.month, []),
     };
 
     this.getLiveCalendar(props.year, props.month, props.homestayId);
@@ -39,10 +39,16 @@ class BasicCalendar extends React.Component {
         const calendar = this.getCalendar(year, month, reservedDays);
         const { type } = this.props;
         if (type === 'checkout') {
-          let next = true;
+          let next = null;
+          for (let i = 0; i < calendar[0].length; i++) {
+            if (!next && calendar[0][i].number !== '') {
+              next = calendar[0][i].valid;
+            }
+          }
+
           for (let w = 0; w < calendar.length; w += 1) {
             for (let d = 0; d < calendar[w].length; d += 1) {
-              if (w !== 0 && d !== 0) {
+              if (calendar[w][d].number !== '') {
                 const temp = calendar[w][d].valid;
                 calendar[w][d].valid = next;
                 next = temp;
