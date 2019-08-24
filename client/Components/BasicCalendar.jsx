@@ -16,6 +16,8 @@ class BasicCalendar extends React.Component {
     };
 
     this.getLiveCalendar(props.year, props.month, props.homestayId);
+    this.prevMonth = this.prevMonth.bind(this);
+    this.nextMonth = this.nextMonth.bind(this);
   }
 
   getLiveCalendar(year, month, homestayId) {
@@ -40,7 +42,7 @@ class BasicCalendar extends React.Component {
         const { type } = this.props;
         if (type === 'checkout') {
           let next = null;
-          for (let i = 0; i < calendar[0].length; i++) {
+          for (let i = 0; i < calendar[0].length; i += 1) {
             if (!next && calendar[0][i].number !== '') {
               next = calendar[0][i].valid;
             }
@@ -200,10 +202,7 @@ class BasicCalendar extends React.Component {
     const monthName = new Intl.DateTimeFormat('en-US', options).format(date);
     return (
       <div>
-        <button type="button" onClick={this.prevMonth.bind(this)}>Prev</button>
-        <button type="button" onClick={this.nextMonth.bind(this)}>Next</button>
-        <div style={{ textAlign: 'center' }}>{monthName}</div>
-        <Month calendar={calendar} />
+        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} />
       </div>
     );
   }
