@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from '../CSS/calendar.css';
 
 class Day extends React.Component {
   constructor(props) {
@@ -26,7 +27,8 @@ class Day extends React.Component {
     if (number === '') {
       style.border = 'none';
     } else {
-      style.boder = 'solid lightgrey';
+      style.border = 'solid lightgrey';
+      style.borderWidth = 'thin';
     }
 
     this.setState({
@@ -52,7 +54,8 @@ class Day extends React.Component {
     if (number === '') {
       style.border = 'none';
     } else {
-      style.boder = 'solid lightgrey';
+      style.border = 'solid lightgrey';
+      style.borderWidth = 'thin';
     }
 
     if (prevProps.number !== number || prevProps.valid !== valid) {
@@ -72,7 +75,7 @@ class Day extends React.Component {
     const { valid, number, style } = this.state;
 
     return (
-      <td style={style} className={valid ? 'hoverable' : ''}>{number || ''}</td>
+      <td style={style} className={valid ? styles.hoverable : ''}>{number || ''}</td>
     );
   }
 }

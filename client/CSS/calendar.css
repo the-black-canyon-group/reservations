@@ -1,4 +1,4 @@
-.square {
+/* .square {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
@@ -9,7 +9,7 @@
   font-family: Arial;
   font-size: 80%;
   font-weight: bold;
-}
+} */
 
 table, td {
   border-collapse: collapse;
@@ -35,4 +35,8 @@ td {
 
 .hoverable:hover {
   background-color: lightgray;
+}
+
+.invalidDate {
+
 }
