@@ -12,7 +12,7 @@ class BasicCalendar extends React.Component {
     this.state = {
       year: props.year,
       month: props.month,
-      calendar: this.getCalendar(props.year, props.month, []),
+      calendar: [],
     };
 
     this.getLiveCalendar(props.year, props.month, props.homestayId);
@@ -31,26 +31,26 @@ class BasicCalendar extends React.Component {
     })
       .then((results) => {
         const { data } = results;
+
         const reservedDays = [];
         for (let i = 0; i < data.length; i += 1) {
           reservedDays.push(data[i].day);
         }
         const calendar = this.getCalendar(year, month, reservedDays);
-
         const { type } = this.props;
         if (type === 'checkout') {
           let next = true;
           for (let w = 0; w < calendar.length; w += 1) {
             for (let d = 0; d < calendar[w].length; d += 1) {
-              const temp = calendar[w][d].valid;
-              calendar[w][d].valid = next;
-              next = temp;
+              if (w !== 0 && d !== 0) {
+                const temp = calendar[w][d].valid;
+                calendar[w][d].valid = next;
+                next = temp;
+              }
             }
           }
-        }
 
-        if (type === 'checkout') {
-        // Get last month
+          // Get last month
           const pastMonth = (month === 0) ? 11 : month;
           const pastYear = (month === 0) ? (year - 1) : year;
 
@@ -66,7 +66,6 @@ class BasicCalendar extends React.Component {
           })
             .then((checkoutData) => {
               const lastDayOfLastMonth = new Date(year, month, 0).getDate();
-
               if (checkoutData.data.length && checkoutData.data[checkoutData.data.length - 1].day === lastDayOfLastMonth) {
                 for (let d = 0; d < calendar[0].length; d += 1) {
                   if (calendar[0][d].number === '1') {
@@ -80,6 +79,9 @@ class BasicCalendar extends React.Component {
                 year,
                 calendar,
               });
+            })
+            .catch(() => {
+
             });
         } else {
           this.setState({
@@ -88,6 +90,9 @@ class BasicCalendar extends React.Component {
             calendar,
           });
         }
+      })
+      .catch(() => {
+
       });
   }
 
@@ -100,23 +105,21 @@ class BasicCalendar extends React.Component {
     const calendar = [];
 
     let week = [];
-    for (let i = 0; i < dayOfFirst; i += 1) {
+    for (let x = 0; x < dayOfFirst; x += 1) {
       week.push({ number: '', valid: false });
     }
+
 
     for (let i = 1; i <= daysInMonth; i += 1) {
       if (week.length === 7) {
         calendar.push(week);
         week = [];
       }
-
       // Check to see if the date is a past date
       let isValid = this.isPastDate(year, month, i);
-
       if (reservedDays.includes(i)) {
         isValid = false;
       }
-
       week.push({ number: `${i}`, valid: isValid });
     }
 
@@ -125,7 +128,6 @@ class BasicCalendar extends React.Component {
     }
 
     calendar.push(week);
-
     return calendar;
   }
 
