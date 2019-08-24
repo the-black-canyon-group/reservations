@@ -3,10 +3,17 @@ import PropTypes from 'prop-types';
 import Day from './Day';
 
 function Month(props) {
-  const { calendar } = props;
+  const {
+    calendar, monthName, prev, next,
+  } = props;
   return (
     <table>
       <tbody>
+        <tr>
+          <td style={{ border: 'none' }}><button type="button" onClick={prev}>Prev</button></td>
+          <td style={{ border: 'none' }} colSpan="5">{monthName}</td>
+          <td style={{ border: 'none' }}><button type="button" onClick={next}>Next</button></td>
+        </tr>
         <tr>
           <td>Su</td>
           <td>Mo</td>
@@ -32,6 +39,9 @@ function Month(props) {
 
 Month.propTypes = {
   calendar: PropTypes.arrayOf(PropTypes.array).isRequired,
+  monthName: PropTypes.string.isRequired,
+  prev: PropTypes.func.isRequired,
+  next: PropTypes.func.isRequired,
 };
 
 export default Month;
