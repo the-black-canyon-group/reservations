@@ -1,6 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
+import styles from '../CSS/reservationBox.css';
 
 class ReservationBox extends React.Component {
   constructor(props) {
@@ -51,18 +52,19 @@ class ReservationBox extends React.Component {
   }
 
   render() {
-    const { price, reviewCount } = this.state;
+    const { price, reviewCount, guestCount } = this.state;
     return (
-      <div style={{ border: '1px solid black', width: 375 }}>
-        <div>{`$${price} per night`}</div>
+      // <div style={{ border: '1px solid black', width: 375 }}>
+      <div className={[styles.container, styles.thinBorder].join(' ')} style={{ padding: 8 }}>
         <div>
-          {`***** ${reviewCount}`}
+          <span className={styles.actualPrice}>{`$${price}`}</span>
+          <span className={styles.price}> per night</span>
         </div>
-        <hr style={{
-          marginLeft: '10',
-          marginRight: '10',
-        }}
-        />
+        <div>
+          <span className={styles.starColor}>★★½★★☆</span>
+          <span style={{ fontSize: 10 }}>{` ${reviewCount}`}</span>
+        </div>
+        <hr className={styles.thinLine} />
         <div>Dates</div>
         <div>
           <table>
@@ -77,9 +79,7 @@ class ReservationBox extends React.Component {
         </div>
         <div>Guests</div>
         <div>
-          <select>
-            <option>GUEST SELECT</option>
-          </select>
+          <div>{`${guestCount} Guest(s)`}</div>
         </div>
         <div>Reserve</div>
         <div style={{ textAlign: 'center' }}>You wont be charged for this yet</div>
