@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 // FORMAT: /homestay/?id=[homestay_id]
 // SAMPLE: http://localhost:3000/homestay/?id=1
 app.get('/homestay', (req, res) => {
-  const homestayId = req.query.id;
+  const { homestayId } = req.query;
   db.getHomestayById(homestayId)
     .then((data) => {
       res.json(data);

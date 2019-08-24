@@ -13,6 +13,7 @@ CREATE TABLE homestays (
   occupancy_fee INTEGER,
   page_views INTEGER,
   average_review DECIMAL(2,1),
+  review_count INTEGER,
   PRIMARY KEY (id)
 );
 
