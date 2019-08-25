@@ -2,6 +2,7 @@
 /* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
+import Axios from 'axios';
 import Month from './Month';
 
 class BasicCalendar extends React.Component {
@@ -11,13 +12,100 @@ class BasicCalendar extends React.Component {
     this.state = {
       year: props.year,
       month: props.month,
-      calendar: this.getCalendar(props.year, props.month),
-      homestayId: props.homestayId,
+      calendar: this.getCalendar(props.year, props.month, []),
     };
+
+    this.getLiveCalendar(props.year, props.month, props.homestayId);
+    this.prevMonth = this.prevMonth.bind(this);
+    this.nextMonth = this.nextMonth.bind(this);
+  }
+
+  getLiveCalendar(year, month, homestayId) {
+    Axios.get('/reservations', {
+      header: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        homestayId,
+        month: (month + 1),
+        year,
+      },
+    })
+      .then((results) => {
+        const { data } = results;
+
+        const reservedDays = [];
+        for (let i = 0; i < data.length; i += 1) {
+          reservedDays.push(data[i].day);
+        }
+        const calendar = this.getCalendar(year, month, reservedDays);
+        const { type } = this.props;
+        if (type === 'checkout') {
+          let next = null;
+          for (let i = 0; i < calendar[0].length; i += 1) {
+            if (!next && calendar[0][i].number !== '') {
+              next = calendar[0][i].valid;
+            }
+          }
+
+          for (let w = 0; w < calendar.length; w += 1) {
+            for (let d = 0; d < calendar[w].length; d += 1) {
+              if (calendar[w][d].number !== '') {
+                const temp = calendar[w][d].valid;
+                calendar[w][d].valid = next;
+                next = temp;
+              }
+            }
+          }
+
+          // Get last month
+          const pastMonth = (month === 0) ? 11 : month;
+          const pastYear = (month === 0) ? (year - 1) : year;
+
+          Axios.get('/reservations', {
+            header: {
+              'Content-Type': 'application/json',
+            },
+            params: {
+              homestayId,
+              month: pastMonth,
+              year: pastYear,
+            },
+          })
+            .then((checkoutData) => {
+              const lastDayOfLastMonth = new Date(year, month, 0).getDate();
+              if (checkoutData.data.length && checkoutData.data[checkoutData.data.length - 1].day === lastDayOfLastMonth) {
+                for (let d = 0; d < calendar[0].length; d += 1) {
+                  if (calendar[0][d].number === '1') {
+                    calendar[0][d].valid = false;
+                  }
+                }
+              }
+
+              this.setState({
+                month,
+                year,
+                calendar,
+              });
+            })
+            .catch(() => {
+
+            });
+        } else {
+          this.setState({
+            month,
+            year,
+            calendar,
+          });
+        }
+      })
+      .catch(() => {
+
+      });
   }
 
   // Get matrix of calendar based on year/month
-  getCalendar(year, month) {
+  getCalendar(year, month, reservedDays) {
     // Check to see which day of the week the first day of the month stars at
     // (so we know how many empty squares to lead with)
     const daysInMonth = new Date((month >= 12) ? year + 1 : year, (month >= 12) ? 0 : month + 1, 0).getDate();
@@ -25,18 +113,21 @@ class BasicCalendar extends React.Component {
     const calendar = [];
 
     let week = [];
-    for (let i = 0; i < dayOfFirst; i += 1) {
+    for (let x = 0; x < dayOfFirst; x += 1) {
       week.push({ number: '', valid: false });
     }
+
 
     for (let i = 1; i <= daysInMonth; i += 1) {
       if (week.length === 7) {
         calendar.push(week);
         week = [];
       }
-
       // Check to see if the date is a past date
-      const isValid = this.isPastDate(year, month, i);
+      let isValid = this.isPastDate(year, month, i);
+      if (reservedDays.includes(i)) {
+        isValid = false;
+      }
       week.push({ number: `${i}`, valid: isValid });
     }
 
@@ -45,16 +136,12 @@ class BasicCalendar extends React.Component {
     }
 
     calendar.push(week);
-
     return calendar;
   }
 
   updateCalendar(year, month) {
-    this.setState({
-      month,
-      year,
-      calendar: this.getCalendar(year, month),
-    });
+    const { homestayId } = this.props;
+    this.getLiveCalendar(year, month, homestayId);
   }
 
   // Button function to go to the NEXT month
@@ -115,10 +202,7 @@ class BasicCalendar extends React.Component {
     const monthName = new Intl.DateTimeFormat('en-US', options).format(date);
     return (
       <div>
-        <button type="button" onClick={this.prevMonth.bind(this)}>Prev</button>
-        <button type="button" onClick={this.nextMonth.bind(this)}>Next</button>
-        <div style={{ textAlign: 'center' }}>{monthName}</div>
-        <Month calendar={calendar} />
+        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} />
       </div>
     );
   }
@@ -127,6 +211,8 @@ class BasicCalendar extends React.Component {
 BasicCalendar.propTypes = {
   year: PropTypes.number.isRequired,
   month: PropTypes.number.isRequired,
+  homestayId: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 

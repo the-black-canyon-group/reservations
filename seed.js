@@ -14,7 +14,8 @@ for (let i = 0; i < 100; i += 1) {
   const occupancyFee = faker.commerce.price();
   const pageViews = 300 + Math.ceil(Math.random() * 200);
   const averageReview = Math.floor(Math.random() * 5) + Math.random();
-  connection.query('INSERT INTO homestays (price, max_guests, cleaning_fee, service_fee, occupancy_fee, page_views, average_review) VALUES (?, ?, ?, ?, ?, ?, CONVERT(?, DECIMAL(2,1)))', [price, maxGuests, cleaningFee, serviceFee, occupancyFee, pageViews, averageReview], (err, result) => {
+  const reviewCount = Math.ceil(Math.random() * 500);
+  connection.query('INSERT INTO homestays (price, max_guests, cleaning_fee, service_fee, occupancy_fee, page_views, average_review, review_count) VALUES (?, ?, ?, ?, ?, ?, CONVERT(?, DECIMAL(2,1)), ?)', [price, maxGuests, cleaningFee, serviceFee, occupancyFee, pageViews, averageReview, reviewCount], (err, result) => {
     if (err) {
       throw err;
     }
