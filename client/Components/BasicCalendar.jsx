@@ -201,7 +201,10 @@ class BasicCalendar extends React.Component {
     const options = { month: 'long' };
     const monthName = new Intl.DateTimeFormat('en-US', options).format(date);
     return (
-      <div>
+      <div style={{
+        border: 'solid lightgrey', borderWidth: 'thin', width: 250, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10,
+      }}
+      >
         <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} />
       </div>
     );

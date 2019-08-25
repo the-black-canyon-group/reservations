@@ -15,7 +15,7 @@ table, td {
   border-collapse: collapse;
 }
 
-table {
+.table, table {
   border: none;
   border-width: thin;
 }
@@ -31,6 +31,12 @@ td {
   font-family: Arial;
   font-size: 80%;
   font-weight: bold;
+}
+
+input {
+  display: table-cell;
+  height: 100%;
+  width: 100%;
 }
 
 .hoverable:hover {

@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Day from './Day';
-// import styles from '../CSS/calendar.css';
+import styles from '../CSS/calendar.css';
 
 function Month(props) {
   const {
     calendar, monthName, prev, next,
   } = props;
   return (
-    <table>
+    <table className={styles.table}>
       <tbody>
         <tr>
-          <td style={{ border: 'none' }}><button type="button" onClick={prev}>Prev</button></td>
+          <td style={{ border: 'none' }}><input onClick={prev} type="image" name="imgbtn" src="images/prevButton.png" alt="" /></td>
           <td style={{ border: 'none' }} colSpan="5">{monthName}</td>
-          <td style={{ border: 'none' }}><button type="button" onClick={next}>Next</button></td>
+          <td style={{ border: 'none' }}><input onClick={next} type="image" name="imgbtn" src="images/nextButton.png" alt="" /></td>
         </tr>
         <tr>
           <td>Su</td>
