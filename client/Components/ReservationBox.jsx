@@ -55,34 +55,51 @@ class ReservationBox extends React.Component {
     const { price, reviewCount, guestCount } = this.state;
     return (
       // <div style={{ border: '1px solid black', width: 375 }}>
-      <div className={[styles.container, styles.thinBorder].join(' ')} style={{ padding: 8 }}>
+      <div
+        className={[styles.container, styles.thinBorder].join(' ')}
+        style={{
+          paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20,
+        }}
+      >
         <div>
           <span className={styles.actualPrice}>{`$${price}`}</span>
           <span className={styles.price}> per night</span>
         </div>
         <div>
-          <span className={styles.starColor}>★★½★★☆</span>
+          <span className={styles.starColor}>★★★★☆</span>
           <span style={{ fontSize: 10 }}>{` ${reviewCount}`}</span>
         </div>
         <hr className={styles.thinLine} />
-        <div>Dates</div>
+        <div style={{ marginTop: 14 }}>Dates</div>
         <div>
           <table>
             <tbody>
-              <tr>
-                <td colSpan="3">Check-in</td>
-                <td>-&gt;</td>
-                <td colSpan="3">Check-out</td>
+              <tr style={{ border: 'solid lightgrey', borderWidth: 'thin' }}>
+                <td style={{ paddingTop: 3, paddingBottom: 3, paddingLeft: 3 }} colSpan="3"><div style={{ paddingLeft: 7 }} className={styles.check}> Check-in</div></td>
+                <td><img className={styles.rightArrow} src="images/rightArrow.png" alt="" /></td>
+                <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3"><div style={{ paddingLeft: 7 }} className={styles.check}>Checkout</div></td>
+              </tr>
+              <tr style={{ visibility: 'collapse' }}>
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
+                <td />
               </tr>
             </tbody>
           </table>
         </div>
-        <div>Guests</div>
-        <div>
-          <div>{`${guestCount} Guest(s)`}</div>
+        <div style={{ marginTop: 14 }}>Guests</div>
+        <div style={{
+          border: 'solid lightgrey', borderWidth: 'thin', height: 30, paddingTop: 5, paddingBottom: 5,
+        }}
+        >
+          <span className={styles.guestsSelect} style={{ paddingLeft: 7 }}>{`${guestCount} Guest(s)`}</span>
         </div>
-        <div>Reserve</div>
-        <div style={{ textAlign: 'center' }}>You wont be charged for this yet</div>
+        <div style={{ marginTop: 14 }} className={styles.reserveButton}>Reserve</div>
+        <div style={{ textAlign: 'center', marginTop: 14, marginBottom: 14 }}>You wont be charged for this yet</div>
       </div>
     );
   }
