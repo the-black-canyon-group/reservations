@@ -4,6 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Axios from 'axios';
 import Month from './Month';
+import styles from '../CSS/calendar.css';
 
 class BasicCalendar extends React.Component {
   constructor(props) {
@@ -196,14 +197,17 @@ class BasicCalendar extends React.Component {
 
   render() {
     const { calendar, year, month } = this.state;
+    const { isPopup, type } = this.props;
 
     const date = new Date(`${year}-${month + 1}-1`);
     const options = { month: 'long' };
     const monthName = new Intl.DateTimeFormat('en-US', options).format(date);
     return (
-      <div style={{
-        border: 'solid lightgrey', borderWidth: 'thin', width: 250, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10,
-      }}
+      <div
+        className={isPopup ? styles.popupInner : null}
+        style={{
+          left: (type === 'checkin' ? 0 : (-35 * 4 - 15)), border: 'solid lightgrey', borderWidth: 'thin', width: 250, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10,
+        }}
       >
         <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} />
       </div>
@@ -216,6 +220,7 @@ BasicCalendar.propTypes = {
   month: PropTypes.number.isRequired,
   homestayId: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
+  isPopup: PropTypes.bool.isRequired,
 };
 
 
