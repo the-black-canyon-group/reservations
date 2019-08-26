@@ -19,8 +19,8 @@ describe('Day', () => {
 
   it('should render day component', () => {
     const { number, valid, style } = dayInstance;
+    console.log('SHALLOW:', Day);
     const wrapper = shallow(<Day number={number} valid={valid} style={style} />);
-
     style.textDecoration = 'none';
     style.color = 'black';
     style.boder = 'solid lightgrey';
