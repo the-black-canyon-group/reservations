@@ -32,6 +32,17 @@ app.get('/reservations', (req, res) => {
     });
 });
 
+app.get('/getNextAvailableReservationDate', (req, res) => {
+  const {
+    year, month, day, homestayId,
+  } = req.query;
+  db.getNextAvailableReservationDate(homestayId, year, month, day)
+    .then((data) => {
+      console.log(data);
+      res.json(data);
+    });
+});
+
 app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log('listening on port:', port);

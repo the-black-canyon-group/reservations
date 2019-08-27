@@ -74,30 +74,24 @@ class ReservationBox extends React.Component {
     });
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { showCheckIn, showCheckout } = this.state;
-    if (prevState.showCheckIn !== showCheckIn || prevState.showCheckout !== showCheckout) {
-      this.setState({
-        showCheckIn,
-        showCheckout,
-      });
-    }
-  }
-
   setDate(type, year, month, day) {
     const dateString = `${(month === 12) ? 1 : month + 1}/${day}/${year}`;
+
+    const { checkinDate, checkoutDate } = this.state;
 
     if (type === 'checkin') {
       this.setState({
         checkinDate: { year, month, day },
         checkinString: dateString,
-        showCheckout: true,
+        showCheckout: (checkoutDate.year === null),
+        showCheckIn: false,
       });
     } else {
       this.setState({
         checkoutDate: { year, month, day },
         checkoutString: dateString,
-        showCheckIn: true,
+        showCheckIn: (checkinDate.year === null),
+        showCheckout: false,
       });
     }
   }
@@ -109,16 +103,6 @@ class ReservationBox extends React.Component {
         showCheckout: false,
         showGuestDropdown: false,
       });
-    }
-  }
-
-  switchCalendar() {
-    console.log('hit');
-    const { showCheckIn, showCheckout } = this.state;
-    if (showCheckIn) {
-      this.toggleCheckout();
-    } else {
-      this.toggleCheckout();
     }
   }
 
@@ -217,17 +201,17 @@ class ReservationBox extends React.Component {
             <tbody>
               <tr style={{ border: 'solid lightgrey', borderWidth: 'thin' }}>
                 <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkinRef}>
-                  <div role="button" tabIndex="0" onClick={this.toggleCheckin.bind(this)} onKeyUp={this.toggleCheckin.bind(this)} className={styles.check}>
+                  <div role="button" tabIndex="0" onClick={this.toggleCheckin.bind(this)} onKeyUp={this.toggleCheckin.bind(this)} className={styles.check} style={showCheckIn ? { backgroundColor: 'rgb(153,237,230)' } : { backgroundColor: '' }}>
                     {checkinString}
                   </div>
-                  {showCheckIn ? <div className={styles.popup}><BasicCalendar year={checkinDate.year !== null ? checkinDate.year : this.date.getFullYear()} month={checkinDate.month !== null ? checkinDate.month : this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div> : <div />}
+                  <div className={styles.popup} style={!showCheckIn ? { display: 'none' } : { display: 'block' }}><BasicCalendar year={checkinDate.year !== null ? checkinDate.year : this.date.getFullYear()} month={checkinDate.month !== null ? checkinDate.month : this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div>
                 </td>
                 <td><img className={styles.rightArrow} src="images/rightArrow.png" alt="" /></td>
                 <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkoutRef}>
-                  <div role="button" tabIndex="0" onClick={this.toggleCheckout.bind(this)} onKeyUp={this.toggleCheckout.bind(this)} className={styles.check}>
+                  <div role="button" tabIndex="0" onClick={this.toggleCheckout.bind(this)} onKeyUp={this.toggleCheckout.bind(this)} className={styles.check} style={showCheckout ? { backgroundColor: 'rgb(153,237,230)' } : { backgroundColor: '' }}>
                     {checkoutString}
                   </div>
-                  {showCheckout ? <div className={styles.popup} id="calDiv"><BasicCalendar year={checkoutDate.year !== null ? checkoutDate.year : (checkinDate.year !== null ? checkinDate.year : this.date.getFullYear())} month={checkoutDate.month !== null ? checkoutDate.month : (checkinDate.month !== null ? checkinDate.month : this.date.getMonth())} homestayId={homestayId} type="checkout" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div> : <div />}
+                  <div className={styles.popup} style={!showCheckout ? { display: 'none' } : { display: 'block' }} id="calDiv"><BasicCalendar year={checkoutDate.year !== null ? checkoutDate.year : (checkinDate.year !== null ? checkinDate.year : this.date.getFullYear())} month={checkoutDate.month !== null ? checkoutDate.month : (checkinDate.month !== null ? checkinDate.month : this.date.getMonth())} homestayId={homestayId} type="checkout" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div>
                 </td>
               </tr>
               <tr style={{ visibility: 'collapse' }}>
