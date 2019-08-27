@@ -25,6 +25,7 @@ class BasicCalendar extends React.Component {
     this.prevMonth = this.prevMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
     this.dateClickHandler = this.dateClickHandler.bind(this);
+    this.validDays = [];
   }
 
   getLiveCalendar(year, month, homestayId) {
@@ -39,12 +40,12 @@ class BasicCalendar extends React.Component {
       },
     })
       .then((results) => {
-        const { data } = results;
-
+        const { reservations } = results.data;
         const reservedDays = [];
-        for (let i = 0; i < data.length; i += 1) {
-          reservedDays.push(data[i].day);
+        for (let i = 0; i < reservations.length; i += 1) {
+          reservedDays.push(reservations[i]);
         }
+        this.reservedDays = reservedDays;
         const calendar = this.getCalendar(year, month, reservedDays);
         const { type } = this.props;
         if (type === 'checkout') {
@@ -105,6 +106,15 @@ class BasicCalendar extends React.Component {
             calendar,
           });
         }
+
+
+        for (let w = 0; w < calendar.length; w += 1) {
+          for (let d = 0; d < calendar[w].length; d += 1) {
+            if (calendar[w][d].valid) {
+              this.validDays.push(calendar[w][d].number);
+            }
+          }
+        }
       })
       .catch(() => {
 
@@ -148,7 +158,11 @@ class BasicCalendar extends React.Component {
 
   dateClickHandler(e) {
     const { month, year } = this.state;
-    console.log(`${year}-${month}-${e.target.innerHTML}`);
+    const { type, setDate } = this.props;
+    const focusDate = e.target.innerHTML;
+    if (this.validDays.includes(focusDate)) {
+      setDate(type, year, month, parseInt(focusDate, 10));
+    }
   }
 
   updateCalendar(year, month) {
@@ -208,7 +222,9 @@ class BasicCalendar extends React.Component {
 
   render() {
     const { calendar, year, month } = this.state;
-    const { isPopup, type, turnOffPopups } = this.props;
+    const {
+      isPopup, type, clearDates, checkinDate, checkoutDate,
+    } = this.props;
 
     const date = new Date(`${year}-${month + 1}-1`);
     const options = { month: 'long' };
@@ -227,7 +243,7 @@ class BasicCalendar extends React.Component {
           paddingRight: 10,
         }}
       >
-        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} turnOffPopups={turnOffPopups} dateClickHandler={this.dateClickHandler} />
+        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} month={month} clearDates={clearDates} dateClickHandler={this.dateClickHandler} checkinDate={checkinDate} checkoutDate={checkoutDate} />
       </div>
     );
   }
@@ -239,7 +255,18 @@ BasicCalendar.propTypes = {
   homestayId: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
   isPopup: PropTypes.bool.isRequired,
-  turnOffPopups: PropTypes.func.isRequired,
+  clearDates: PropTypes.func.isRequired,
+  setDate: PropTypes.func.isRequired,
+  checkinDate: PropTypes.shape({
+    year: PropTypes.number.isRequired,
+    month: PropTypes.number.isRequired,
+    day: PropTypes.number.isRequired,
+  }).isRequired,
+  checkoutDate: PropTypes.shape({
+    year: PropTypes.number.isRequired,
+    month: PropTypes.number.isRequired,
+    day: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 

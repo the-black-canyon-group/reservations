@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../CSS/calendar.css';
@@ -15,7 +16,9 @@ class Day extends React.Component {
   componentDidMount() {
     const style = {};
 
-    const { valid, number } = this.props;
+    const {
+      valid, number, isCheckinDate, isCheckoutDate,
+    } = this.props;
     if (!valid) {
       style.textDecoration = 'line-through';
       style.color = 'lightgrey';
@@ -29,6 +32,12 @@ class Day extends React.Component {
     } else {
       style.border = 'solid lightgrey';
       style.borderWidth = 'thin';
+    }
+
+    if (isCheckinDate || isCheckoutDate) {
+      style.textDecoration = 'none';
+      style.backgroundColor = 'rgb(0, 166, 153)';
+      style.color = 'white';
     }
 
     this.setState({
@@ -42,7 +51,9 @@ class Day extends React.Component {
   componentDidUpdate(prevProps) {
     const style = {};
 
-    const { valid, number } = this.props;
+    const {
+      valid, number, isCheckinDate, isCheckoutDate,
+    } = this.props;
     if (!valid) {
       style.textDecoration = 'line-through';
       style.color = 'lightgrey';
@@ -58,7 +69,13 @@ class Day extends React.Component {
       style.borderWidth = 'thin';
     }
 
-    if (prevProps.number !== number || prevProps.valid !== valid) {
+    if (isCheckinDate || isCheckoutDate) {
+      style.textDecoration = 'none';
+      style.backgroundColor = 'rgb(0, 166, 153)';
+      style.color = 'white';
+    }
+
+    if (prevProps.number !== number || prevProps.valid !== valid || prevProps.isCheckinDate !== isCheckinDate || prevProps.isCheckoutDate !== isCheckoutDate) {
       this.setTheState(number, valid, style);
     }
   }
@@ -76,7 +93,20 @@ class Day extends React.Component {
     const { dateClickHandler } = this.props;
 
     return (
-      <td style={style} className={valid ? styles.hoverable : ''}><div role="button" tabIndex="0" onClick={dateClickHandler} onKeyPress={dateClickHandler}>{number || ''}</div></td>
+      <td style={style} className={valid ? styles.hoverable : ''}>
+        <div
+          role="button"
+          style={{
+            height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+          tabIndex="0"
+          onClick={dateClickHandler}
+          onKeyPress={dateClickHandler}
+        >
+          {number || ''}
+        </div>
+
+      </td>
     );
   }
 }
@@ -92,6 +122,8 @@ Day.propTypes = {
     },
   ),
   dateClickHandler: PropTypes.func.isRequired,
+  isCheckoutDate: PropTypes.bool.isRequired,
+  isCheckinDate: PropTypes.bool.isRequired,
 };
 
 Day.defaultProps = {
