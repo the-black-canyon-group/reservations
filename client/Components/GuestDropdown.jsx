@@ -32,7 +32,7 @@ class GuestDropdown extends React.Component {
             <tr style={{ marginTop: 200 }}>
               <td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7 }}><div className={styles.cell}>Adults</div></td>
               <td><div className={styles.cell}><GuestButton type="subtract" /></div></td>
-              <td><div className={styles.cell}>{adultCount}</div></td>
+              <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{adultCount}</div></td>
               <td><div className={styles.cell}><GuestButton type="add" /></div></td>
             </tr>
             <tr>
@@ -41,7 +41,7 @@ class GuestDropdown extends React.Component {
                 <div style={{ fontWeight: '1', color: 'grey' }}>Ages 2-12</div>
               </td>
               <td><div className={styles.cell}><GuestButton type="subtract" /></div></td>
-              <td><div className={styles.cell}>{childrenCount}</div></td>
+              <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{childrenCount}</div></td>
               <td><div className={styles.cell}><GuestButton type="add" /></div></td>
             </tr>
             <tr>
@@ -50,7 +50,7 @@ class GuestDropdown extends React.Component {
                 <div style={{ fontWeight: '1', color: 'grey' }}>Under 2</div>
               </td>
               <td><div className={styles.cell}><GuestButton type="subtract" /></div></td>
-              <td><div className={styles.cell}>{infantCount}</div></td>
+              <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{infantCount}</div></td>
               <td><div className={styles.cell}><GuestButton type="add" /></div></td>
             </tr>
             <tr>

@@ -5,14 +5,14 @@ import styles from '../CSS/calendar.css';
 
 function Month(props) {
   const {
-    calendar, monthName, prev, next,
+    calendar, monthName, prev, next, year,
   } = props;
   return (
     <table className={styles.table}>
       <tbody>
         <tr>
           <td style={{ border: 'none' }}><input onClick={prev} type="image" name="imgbtn" src="images/prevButton.png" alt="" /></td>
-          <td style={{ border: 'none' }} colSpan="5">{monthName}</td>
+          <td style={{ border: 'none' }} colSpan="5">{`${monthName} ${year}`}</td>
           <td style={{ border: 'none' }}><input onClick={next} type="image" name="imgbtn" src="images/nextButton.png" alt="" /></td>
         </tr>
         <tr>
@@ -43,6 +43,7 @@ Month.propTypes = {
   monthName: PropTypes.string.isRequired,
   prev: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
+  year: PropTypes.number.isRequired,
 };
 
 export default Month;
