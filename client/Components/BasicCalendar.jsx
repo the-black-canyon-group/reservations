@@ -10,10 +10,15 @@ class BasicCalendar extends React.Component {
   constructor(props) {
     super(props);
 
+    const allDays = [];
+    for (let i = 0; i < 31; i += 1) {
+      allDays.push(i + 1);
+    }
+
     this.state = {
       year: props.year,
       month: props.month,
-      calendar: this.getCalendar(props.year, props.month, []),
+      calendar: this.getCalendar(props.year, props.month, allDays),
     };
 
     this.getLiveCalendar(props.year, props.month, props.homestayId);
@@ -206,10 +211,17 @@ class BasicCalendar extends React.Component {
       <div
         className={isPopup ? styles.popupInner : null}
         style={{
-          left: (type === 'checkin' ? 0 : (-35 * 4 - 15)), border: 'solid lightgrey', borderWidth: 'thin', width: 250, paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10,
+          left: (type === 'checkin' ? 0 : (-35 * 4 - 15)),
+          border: 'solid lightgrey',
+          borderWidth: 'thin',
+          width: 250,
+          paddingTop: 10,
+          paddingBottom: 10,
+          paddingLeft: 10,
+          paddingRight: 10,
         }}
       >
-        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} />
+        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} />
       </div>
     );
   }

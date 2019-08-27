@@ -66,7 +66,7 @@ class ReservationBox extends React.Component {
   }
 
   handleOutsideClick(e) {
-    if (!(this.checkinRef.current.contains(e.target) || this.checkoutRef.current.contains(e.target) || this.guestDropdownRef.current.contains(e.target))) {
+    if (!(this.checkinRef.current.contains(e.target) || this.checkoutRef.current.contains(e.target) || this.guestDropdownRef.current.contains(e.target)) || (e.target.id === 'calDiv')) {
       this.setState({
         showCheckIn: false,
         showCheckout: false,
@@ -138,7 +138,7 @@ class ReservationBox extends React.Component {
                   <div role="button" tabIndex="0" onClick={this.toggleCheckout.bind(this)} onKeyUp={this.toggleCheckout.bind(this)} className={styles.check}>
                     {checkoutString}
                   </div>
-                  {showCheckout ? <div className={styles.popup}><BasicCalendar year={2019} month={7} homestayId={1} type="checkout" isPopup /></div> : <div />}
+                  {showCheckout ? <div className={styles.popup} id="calDiv"><BasicCalendar year={2019} month={7} homestayId={1} type="checkout" isPopup /></div> : <div />}
                 </td>
               </tr>
               <tr style={{ visibility: 'collapse' }}>
@@ -157,13 +157,29 @@ class ReservationBox extends React.Component {
           <span
             role="button"
             className={styles.guestsSelect}
-            style={{ paddingLeft: 7 }}
+            style={{ paddingLeft: 7, display: 'flex', justifyContent: 'space-between' }}
             onClick={this.toggleGuestDropdown.bind(this)}
             onKeyUp={this.toggleGuestDropdown.bind(this)}
             tabIndex="0"
+
           >
-            {`${guestCount} guest`}
-            {(guestCount > 1) ? 's' : ''}
+            <span>
+              {`${guestCount} guest`}
+              {(guestCount > 1) ? 's' : ''}
+            </span>
+            <span style={{ paddingRight: 7 }}>
+              <svg
+                viewBox="0 0 18 18"
+                role="presentation"
+                aria-hidden="true"
+                focusable="false"
+                style={{
+                  height: '16px', width: '16px', display: 'block', fill: 'currentcolor', align: 'right',
+                }}
+              >
+                <path d="m16.29 4.3a1 1 0 1 1 1.41 1.42l-8 8a1 1 0 0 1 -1.41 0l-8-8a1 1 0 1 1 1.41-1.42l7.29 7.29z" fillRule="evenodd" />
+              </svg>
+            </span>
           </span>
           <div className={styles.popup} style={showGuestDropdown ? { display: '' } : { display: 'none' }}><GuestDropdown adultCount={2} childrenCount={3} infantCount={4} maxGuests={6} /></div>
         </div>
