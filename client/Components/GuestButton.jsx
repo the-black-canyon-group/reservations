@@ -11,7 +11,7 @@ class GuestButton extends React.Component {
   }
 
   render() {
-    const { type } = this.props;
+    const { type, updateCounts, personType } = this.props;
     return (
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: (type === 'add' ? 0 : 50), marginLeft: (type === 'add' ? 0 : 50),
@@ -21,6 +21,7 @@ class GuestButton extends React.Component {
           type="button"
           className={styles.button}
           style={{ textAlign: 'center' }}
+          onClick={() => { updateCounts((type === 'add' ? 1 : -1), personType); }}
         >
           <span style={{ textAlign: 'center' }}>
             <svg
@@ -43,6 +44,8 @@ class GuestButton extends React.Component {
 
 GuestButton.propTypes = {
   type: PropTypes.string.isRequired,
+  updateCounts: PropTypes.func.isRequired,
+  personType: PropTypes.string.isRequired,
 };
 
 export default GuestButton;

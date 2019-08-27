@@ -28,12 +28,13 @@ class ReservationBox extends React.Component {
       showGuestDropdown: false,
       checkinString: 'Check-in',
       checkoutString: 'Checkout',
-      guestString: '1 guest',
     };
 
     this.checkinRef = React.createRef();
     this.checkoutRef = React.createRef();
     this.guestDropdownRef = React.createRef();
+    this.updateGuestCount = this.updateGuestCount.bind(this);
+    this.date = new Date();
   }
 
   componentDidMount() {
@@ -55,7 +56,7 @@ class ReservationBox extends React.Component {
         rating: homestayInfo.average_review,
         guestCount: 1,
         adultCount: 1,
-        maxGuests: homestayInfo.maxGuests,
+        maxGuests: homestayInfo.max_guests,
         cleaningFee: homestayInfo.cleaning_fee,
         occupancyFee: homestayInfo.occupancy_fee,
         serviceFee: homestayInfo.service_fee,
@@ -94,17 +95,48 @@ class ReservationBox extends React.Component {
   }
 
   toggleGuestDropdown() {
-    const { showGuestDropdown } = this.state;
+    const { showGuestDropdown, maxGuests } = this.state;
     this.setState({
+      maxGuests,
       showGuestDropdown: !showGuestDropdown,
       showCheckout: false,
       showCheckIn: false,
     });
   }
 
+  updateGuestCount(num, type) {
+    let {
+      guestCount, adultCount, childrenCount, infantCount,
+    } = this.state;
+
+    switch (type) {
+      case 'adult':
+        guestCount += num;
+        adultCount += num;
+        break;
+      case 'children':
+        guestCount += num;
+        childrenCount += num;
+        break;
+      case 'infant':
+        infantCount += num;
+        break;
+      default:
+        break;
+    }
+
+    this.setState({
+      guestCount,
+      adultCount,
+      childrenCount,
+      infantCount,
+    });
+  }
+
   render() {
+    const { homestayId } = this.props;
     const {
-      price, reviewCount, guestCount, showCheckIn, showCheckout, checkinString, checkoutString, guestString, showGuestDropdown,
+      price, reviewCount, guestCount, showCheckIn, showCheckout, checkinString, checkoutString, showGuestDropdown, adultCount, childrenCount, infantCount, maxGuests,
     } = this.state;
     return (
       <div
@@ -131,14 +163,14 @@ class ReservationBox extends React.Component {
                   <div role="button" tabIndex="0" onClick={this.toggleCheckin.bind(this)} onKeyUp={this.toggleCheckin.bind(this)} className={styles.check}>
                     {checkinString}
                   </div>
-                  {showCheckIn ? <div className={styles.popup}><BasicCalendar year={2019} month={7} homestayId={1} type="checkin" isPopup /></div> : <div />}
+                  {showCheckIn ? <div className={styles.popup}><BasicCalendar year={this.date.getFullYear()} month={this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup /></div> : <div />}
                 </td>
                 <td><img className={styles.rightArrow} src="images/rightArrow.png" alt="" /></td>
                 <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkoutRef}>
                   <div role="button" tabIndex="0" onClick={this.toggleCheckout.bind(this)} onKeyUp={this.toggleCheckout.bind(this)} className={styles.check}>
                     {checkoutString}
                   </div>
-                  {showCheckout ? <div className={styles.popup} id="calDiv"><BasicCalendar year={2019} month={7} homestayId={1} type="checkout" isPopup /></div> : <div />}
+                  {showCheckout ? <div className={styles.popup} id="calDiv"><BasicCalendar year={this.date.getFullYear()} month={this.date.getMonth()} homestayId={homestayId} type="checkout" isPopup /></div> : <div />}
                 </td>
               </tr>
               <tr style={{ visibility: 'collapse' }}>
@@ -150,7 +182,11 @@ class ReservationBox extends React.Component {
         <div style={{ marginTop: 14 }}>Guests</div>
         <div
           style={{
-            border: 'solid lightgrey', borderWidth: 'thin', height: 30, paddingTop: 5, paddingBottom: 5,
+            border: 'solid lightgrey',
+            borderWidth: 'thin',
+            height: 30,
+            paddingTop: 5,
+            paddingBottom: 5,
           }}
           ref={this.guestDropdownRef}
         >
@@ -161,7 +197,6 @@ class ReservationBox extends React.Component {
             onClick={this.toggleGuestDropdown.bind(this)}
             onKeyUp={this.toggleGuestDropdown.bind(this)}
             tabIndex="0"
-
           >
             <span>
               {`${guestCount} guest`}
@@ -181,7 +216,7 @@ class ReservationBox extends React.Component {
               </svg>
             </span>
           </span>
-          <div className={styles.popup} style={showGuestDropdown ? { display: '' } : { display: 'none' }}><GuestDropdown adultCount={2} childrenCount={3} infantCount={4} maxGuests={6} /></div>
+          <div className={styles.popup} style={showGuestDropdown ? { display: '' } : { display: 'none' }}><GuestDropdown adultCount={adultCount} updateGuestCount={this.updateGuestCount} childrenCount={childrenCount} infantCount={infantCount} maxGuests={maxGuests} /></div>
         </div>
         <div style={{ marginTop: 14 }} className={styles.reserveButton}>Reserve</div>
         <div style={{ textAlign: 'center', marginTop: 14, marginBottom: 14 }}>You wont be charged for this yet</div>
