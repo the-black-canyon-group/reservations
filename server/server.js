@@ -24,7 +24,11 @@ app.get('/reservations', (req, res) => {
   const { month, homestayId, year } = req.query;
   db.getReservationDaysByMonth(homestayId, month, year)
     .then((data) => {
-      res.json(data);
+      const reservations = [];
+      for (let i = 0; i < data.length; i += 1) {
+        reservations.push(data[i].day);
+      }
+      res.json({ reservations });
     });
 });
 

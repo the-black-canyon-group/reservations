@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable max-len */
 import React from 'react';
 import Axios from 'axios';
@@ -26,6 +27,8 @@ class ReservationBox extends React.Component {
       showCheckIn: false,
       showCheckout: false,
       showGuestDropdown: false,
+      checkinDate: { year: null, month: null, day: null },
+      checkoutDate: { year: null, month: null, day: null },
       checkinString: 'Check-in',
       checkoutString: 'Checkout',
     };
@@ -35,7 +38,8 @@ class ReservationBox extends React.Component {
     this.guestDropdownRef = React.createRef();
     this.updateGuestCount = this.updateGuestCount.bind(this);
     this.toggleGuestDropdown = this.toggleGuestDropdown.bind(this);
-    this.turnOffPopups = this.turnOffPopups.bind(this);
+    this.clearDates = this.clearDates.bind(this);
+    this.setDate = this.setDate.bind(this);
     this.date = new Date();
   }
 
@@ -64,8 +68,38 @@ class ReservationBox extends React.Component {
         serviceFee: homestayInfo.service_fee,
         pageViews: homestayInfo.page_views,
         reviewCount: homestayInfo.review_count,
+        checkinDate: { year: null, month: null, day: null },
+        checkoutDate: { year: null, month: null, day: null },
       });
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { showCheckIn, showCheckout } = this.state;
+    if (prevState.showCheckIn !== showCheckIn || prevState.showCheckout !== showCheckout) {
+      this.setState({
+        showCheckIn,
+        showCheckout,
+      });
+    }
+  }
+
+  setDate(type, year, month, day) {
+    const dateString = `${(month === 12) ? 1 : month + 1}/${day}/${year}`;
+
+    if (type === 'checkin') {
+      this.setState({
+        checkinDate: { year, month, day },
+        checkinString: dateString,
+        showCheckout: true,
+      });
+    } else {
+      this.setState({
+        checkoutDate: { year, month, day },
+        checkoutString: dateString,
+        showCheckIn: true,
+      });
+    }
   }
 
   handleOutsideClick(e) {
@@ -75,6 +109,16 @@ class ReservationBox extends React.Component {
         showCheckout: false,
         showGuestDropdown: false,
       });
+    }
+  }
+
+  switchCalendar() {
+    console.log('hit');
+    const { showCheckIn, showCheckout } = this.state;
+    if (showCheckIn) {
+      this.toggleCheckout();
+    } else {
+      this.toggleCheckout();
     }
   }
 
@@ -96,11 +140,14 @@ class ReservationBox extends React.Component {
     });
   }
 
-  turnOffPopups() {
+  clearDates() {
     this.setState({
       showCheckout: false,
       showCheckIn: false,
-      showGuestDropdown: false,
+      checkinDate: { year: null, month: null, day: null },
+      checkoutDate: { year: null, month: null, day: null },
+      checkinString: 'Check-in',
+      checkoutString: 'Checkout',
     });
   }
 
@@ -146,7 +193,7 @@ class ReservationBox extends React.Component {
   render() {
     const { homestayId } = this.props;
     const {
-      price, reviewCount, guestCount, showCheckIn, showCheckout, checkinString, checkoutString, showGuestDropdown, adultCount, childrenCount, infantCount, maxGuests,
+      price, reviewCount, guestCount, showCheckIn, showCheckout, checkinString, checkoutString, showGuestDropdown, adultCount, childrenCount, infantCount, maxGuests, checkinDate, checkoutDate,
     } = this.state;
     return (
       <div
@@ -173,14 +220,14 @@ class ReservationBox extends React.Component {
                   <div role="button" tabIndex="0" onClick={this.toggleCheckin.bind(this)} onKeyUp={this.toggleCheckin.bind(this)} className={styles.check}>
                     {checkinString}
                   </div>
-                  {showCheckIn ? <div className={styles.popup}><BasicCalendar year={this.date.getFullYear()} month={this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup turnOffPopups={this.turnOffPopups} /></div> : <div />}
+                  {showCheckIn ? <div className={styles.popup}><BasicCalendar year={checkinDate.year !== null ? checkinDate.year : this.date.getFullYear()} month={checkinDate.month !== null ? checkinDate.month : this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div> : <div />}
                 </td>
                 <td><img className={styles.rightArrow} src="images/rightArrow.png" alt="" /></td>
                 <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkoutRef}>
                   <div role="button" tabIndex="0" onClick={this.toggleCheckout.bind(this)} onKeyUp={this.toggleCheckout.bind(this)} className={styles.check}>
                     {checkoutString}
                   </div>
-                  {showCheckout ? <div className={styles.popup} id="calDiv"><BasicCalendar year={this.date.getFullYear()} month={this.date.getMonth()} homestayId={homestayId} type="checkout" isPopup turnOffPopups={this.turnOffPopups} /></div> : <div />}
+                  {showCheckout ? <div className={styles.popup} id="calDiv"><BasicCalendar year={checkoutDate.year !== null ? checkoutDate.year : (checkinDate.year !== null ? checkinDate.year : this.date.getFullYear())} month={checkoutDate.month !== null ? checkoutDate.month : (checkinDate.month !== null ? checkinDate.month : this.date.getMonth())} homestayId={homestayId} type="checkout" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div> : <div />}
                 </td>
               </tr>
               <tr style={{ visibility: 'collapse' }}>

@@ -6,7 +6,7 @@ import styles from '../CSS/calendar.css';
 
 function Month(props) {
   const {
-    calendar, monthName, prev, next, year, turnOffPopups, dateClickHandler,
+    calendar, monthName, prev, next, year, clearDates, dateClickHandler, checkinDate, checkoutDate, month,
   } = props;
   return (
     <table className={styles.table}>
@@ -28,24 +28,33 @@ function Month(props) {
         {/* create table row for each week */}
         {calendar.map((week) => (
           <tr>
-            {week.map((day) => (
+            {week.map((day) => {
               // create day-component/table-cell for each day
-              <Day number={day.number} valid={day.valid} style={{}} dateClickHandler={dateClickHandler} />
-            ))}
+              let isCheckinDate = false;
+              if (day.number === `${checkinDate.day}` && checkinDate.year === year && checkinDate.month === month) {
+                isCheckinDate = true;
+              }
+
+              let isCheckoutDate = false;
+              if (day.number === `${checkoutDate.day}` && checkoutDate.year === year && checkoutDate.month === month) {
+                isCheckoutDate = true;
+              }
+              return (<Day number={day.number} valid={day.valid} style={{}} dateClickHandler={dateClickHandler} isCheckoutDate={isCheckoutDate} isCheckinDate={isCheckinDate} />);
+            })}
           </tr>
         ))}
         <tr>
-          <td colSpan="6" />
-          <td>
+          <td colSpan="5" />
+          <td colSpan="2">
+            <br />
             <div
               role="button"
               tabIndex="0"
-              onClick={turnOffPopups}
-              onKeyPress={turnOffPopups}
+              onClick={clearDates}
+              onKeyPress={clearDates}
               style={{ color: 'rgb(0, 132, 137)' }}
             >
-              <br />
-                Close
+                Clear dates
             </div>
           </td>
         </tr>
@@ -60,8 +69,19 @@ Month.propTypes = {
   prev: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
   year: PropTypes.number.isRequired,
-  turnOffPopups: PropTypes.func.isRequired,
+  month: PropTypes.number.isRequired,
+  clearDates: PropTypes.func.isRequired,
   dateClickHandler: PropTypes.func.isRequired,
+  checkinDate: PropTypes.shape({
+    year: PropTypes.number.isRequired,
+    month: PropTypes.number.isRequired,
+    day: PropTypes.number.isRequired,
+  }).isRequired,
+  checkoutDate: PropTypes.shape({
+    year: PropTypes.number.isRequired,
+    month: PropTypes.number.isRequired,
+    day: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default Month;
