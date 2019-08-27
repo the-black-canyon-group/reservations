@@ -103,7 +103,7 @@ class GuestDropdown extends React.Component {
               </td>
               <td><div className={styles.cell} style={(infantCount > 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="infant" /></div></td>
               <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{infantCount}</div></td>
-              <td><div className={styles.cell} style={(infantCount < 6) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="infant" /></div></td>
+              <td><div className={styles.cell} style={(infantCount < 5) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="infant" /></div></td>
             </tr>
             <tr>
               <td
