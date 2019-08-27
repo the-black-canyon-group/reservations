@@ -34,6 +34,8 @@ class ReservationBox extends React.Component {
     this.checkoutRef = React.createRef();
     this.guestDropdownRef = React.createRef();
     this.updateGuestCount = this.updateGuestCount.bind(this);
+    this.toggleGuestDropdown = this.toggleGuestDropdown.bind(this);
+    this.turnOffPopups = this.turnOffPopups.bind(this);
     this.date = new Date();
   }
 
@@ -89,6 +91,14 @@ class ReservationBox extends React.Component {
     const { showCheckout } = this.state;
     this.setState({
       showCheckout: !showCheckout,
+      showCheckIn: false,
+      showGuestDropdown: false,
+    });
+  }
+
+  turnOffPopups() {
+    this.setState({
+      showCheckout: false,
       showCheckIn: false,
       showGuestDropdown: false,
     });
@@ -163,14 +173,14 @@ class ReservationBox extends React.Component {
                   <div role="button" tabIndex="0" onClick={this.toggleCheckin.bind(this)} onKeyUp={this.toggleCheckin.bind(this)} className={styles.check}>
                     {checkinString}
                   </div>
-                  {showCheckIn ? <div className={styles.popup}><BasicCalendar year={this.date.getFullYear()} month={this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup /></div> : <div />}
+                  {showCheckIn ? <div className={styles.popup}><BasicCalendar year={this.date.getFullYear()} month={this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup turnOffPopups={this.turnOffPopups} /></div> : <div />}
                 </td>
                 <td><img className={styles.rightArrow} src="images/rightArrow.png" alt="" /></td>
                 <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkoutRef}>
                   <div role="button" tabIndex="0" onClick={this.toggleCheckout.bind(this)} onKeyUp={this.toggleCheckout.bind(this)} className={styles.check}>
                     {checkoutString}
                   </div>
-                  {showCheckout ? <div className={styles.popup} id="calDiv"><BasicCalendar year={this.date.getFullYear()} month={this.date.getMonth()} homestayId={homestayId} type="checkout" isPopup /></div> : <div />}
+                  {showCheckout ? <div className={styles.popup} id="calDiv"><BasicCalendar year={this.date.getFullYear()} month={this.date.getMonth()} homestayId={homestayId} type="checkout" isPopup turnOffPopups={this.turnOffPopups} /></div> : <div />}
                 </td>
               </tr>
               <tr style={{ visibility: 'collapse' }}>
@@ -194,13 +204,15 @@ class ReservationBox extends React.Component {
             role="button"
             className={styles.guestsSelect}
             style={{ paddingLeft: 7, display: 'flex', justifyContent: 'space-between' }}
-            onClick={this.toggleGuestDropdown.bind(this)}
-            onKeyUp={this.toggleGuestDropdown.bind(this)}
+            onClick={this.toggleGuestDropdown}
+            onKeyUp={this.toggleGuestDropdown}
             tabIndex="0"
           >
             <span>
               {`${guestCount} guest`}
               {(guestCount > 1) ? 's' : ''}
+              {(infantCount === 1) ? `, ${infantCount} infant` : ''}
+              {(infantCount > 1) ? `, ${infantCount} infants` : ''}
             </span>
             <span style={{ paddingRight: 7 }}>
               <svg
@@ -216,7 +228,7 @@ class ReservationBox extends React.Component {
               </svg>
             </span>
           </span>
-          <div className={styles.popup} style={showGuestDropdown ? { display: '' } : { display: 'none' }}><GuestDropdown adultCount={adultCount} updateGuestCount={this.updateGuestCount} childrenCount={childrenCount} infantCount={infantCount} maxGuests={maxGuests} /></div>
+          <div className={styles.popup} style={showGuestDropdown ? { display: '' } : { display: 'none' }}><GuestDropdown adultCount={adultCount} updateGuestCount={this.updateGuestCount} childrenCount={childrenCount} infantCount={infantCount} maxGuests={maxGuests} toggleGuestDropDown={this.toggleGuestDropdown} /></div>
         </div>
         <div style={{ marginTop: 14 }} className={styles.reserveButton}>Reserve</div>
         <div style={{ textAlign: 'center', marginTop: 14, marginBottom: 14 }}>You wont be charged for this yet</div>

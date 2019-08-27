@@ -26,10 +26,11 @@ class GuestDropdown extends React.Component {
   }
 
   componentDidUpdate() {
-    const oldMaxGuests = this.state.maxGuests;
-    const newMaxGuests = this.props.maxGuests;
+    const { maxGuests: oldMaxGuests } = this.state;
+    const { maxGuests: newMaxGuests } = this.props;
 
     if (oldMaxGuests !== newMaxGuests) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         maxGuests: newMaxGuests,
       });
@@ -72,10 +73,12 @@ class GuestDropdown extends React.Component {
       adultCount, childrenCount, infantCount, maxGuests, guestCount,
     } = this.state;
 
+    const { toggleGuestDropDown } = this.props;
+
     return (
       <div
         style={{
-          width: 265, border: 'solid lightgrey', borderWidth: 'thin', paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10,
+          width: '265', border: 'solid lightgrey', left: -5, borderWidth: 'thin', paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10,
         }}
         className={[styles.popupInner].join('')}
       >
@@ -119,11 +122,19 @@ class GuestDropdown extends React.Component {
             </tr>
             <tr>
               <td colSpan="6" />
-              <td style={{
-                paddingRight: '10', color: 'rgb(0, 132, 137)', fontSize: '80%', fontWeight: 'bold',
-              }}
+              <td
+                style={{
+                  paddingRight: '10', color: 'rgb(0, 132, 137)', fontSize: '80%', fontWeight: 'bold',
+                }}
               >
+                <div
+                  role="button"
+                  tabIndex="0"
+                  onClick={toggleGuestDropDown}
+                  onKeyPress={toggleGuestDropDown}
+                >
                 Close
+                </div>
               </td>
             </tr>
             <tr style={{ visibility: 'collapse' }}>{[<td />, <td />, <td />, <td />, <td />, <td />, <td />]}</tr>
@@ -135,12 +146,11 @@ class GuestDropdown extends React.Component {
 }
 
 GuestDropdown.propTypes = {
-  guestCount: PropTypes.number.isRequired,
-  adultCount: PropTypes.number.isRequired,
   childrenCount: PropTypes.number.isRequired,
   infantCount: PropTypes.number.isRequired,
   maxGuests: PropTypes.number.isRequired,
   updateGuestCount: PropTypes.func.isRequired,
+  toggleGuestDropDown: PropTypes.func.isRequired,
 };
 
 export default GuestDropdown;

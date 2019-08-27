@@ -73,9 +73,10 @@ class Day extends React.Component {
 
   render() {
     const { valid, number, style } = this.state;
+    const { dateClickHandler } = this.props;
 
     return (
-      <td style={style} className={valid ? styles.hoverable : ''}>{number || ''}</td>
+      <td style={style} className={valid ? styles.hoverable : ''}><div role="button" tabIndex="0" onClick={dateClickHandler} onKeyPress={dateClickHandler}>{number || ''}</div></td>
     );
   }
 }
@@ -90,6 +91,7 @@ Day.propTypes = {
       textDecoration: PropTypes.string,
     },
   ),
+  dateClickHandler: PropTypes.func.isRequired,
 };
 
 Day.defaultProps = {
