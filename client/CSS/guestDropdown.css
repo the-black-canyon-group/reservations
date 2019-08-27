@@ -17,8 +17,7 @@
 .popupInner { 
   position: relative;  
   top: 4;
-  left: -5;
   margin: auto;  
-  border-radius: 5px;  
+  border-radius: 2px;  
   background: white;  
 }

@@ -24,6 +24,7 @@ class BasicCalendar extends React.Component {
     this.getLiveCalendar(props.year, props.month, props.homestayId);
     this.prevMonth = this.prevMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
+    this.dateClickHandler = this.dateClickHandler.bind(this);
   }
 
   getLiveCalendar(year, month, homestayId) {
@@ -145,6 +146,11 @@ class BasicCalendar extends React.Component {
     return calendar;
   }
 
+  dateClickHandler(e) {
+    const { month, year } = this.state;
+    console.log(`${year}-${month}-${e.target.innerHTML}`);
+  }
+
   updateCalendar(year, month) {
     const { homestayId } = this.props;
     this.getLiveCalendar(year, month, homestayId);
@@ -202,7 +208,7 @@ class BasicCalendar extends React.Component {
 
   render() {
     const { calendar, year, month } = this.state;
-    const { isPopup, type } = this.props;
+    const { isPopup, type, turnOffPopups } = this.props;
 
     const date = new Date(`${year}-${month + 1}-1`);
     const options = { month: 'long' };
@@ -221,7 +227,7 @@ class BasicCalendar extends React.Component {
           paddingRight: 10,
         }}
       >
-        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} />
+        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} turnOffPopups={turnOffPopups} dateClickHandler={this.dateClickHandler} />
       </div>
     );
   }
@@ -233,6 +239,7 @@ BasicCalendar.propTypes = {
   homestayId: PropTypes.number.isRequired,
   type: PropTypes.string.isRequired,
   isPopup: PropTypes.bool.isRequired,
+  turnOffPopups: PropTypes.func.isRequired,
 };
 
 
