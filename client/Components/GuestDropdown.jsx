@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from '../CSS/guestDropdown.css';
@@ -71,8 +72,6 @@ class GuestDropdown extends React.Component {
       adultCount, childrenCount, infantCount, maxGuests, guestCount,
     } = this.state;
 
-    console.log(guestCount, ':', maxGuests);
-    console.log('Adult Count:', adultCount);
     return (
       <div
         style={{
