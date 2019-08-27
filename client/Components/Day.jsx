@@ -27,17 +27,18 @@ class Day extends React.Component {
       style.color = 'black';
     }
 
-    if (number === '') {
-      style.border = 'none';
-    } else {
-      style.border = 'solid lightgrey';
-      style.borderWidth = 'thin';
-    }
-
     if (isCheckinDate || isCheckoutDate) {
       style.textDecoration = 'none';
       style.backgroundColor = 'rgb(0, 166, 153)';
       style.color = 'white';
+    }
+
+    if (number === '') {
+      style.border = 'none';
+      style.backgroundColor = 'white';
+    } else {
+      style.border = 'solid lightgrey';
+      style.borderWidth = 'thin';
     }
 
     this.setState({
@@ -62,17 +63,18 @@ class Day extends React.Component {
       style.color = 'black';
     }
 
-    if (number === '') {
-      style.border = 'none';
-    } else {
-      style.border = 'solid lightgrey';
-      style.borderWidth = 'thin';
-    }
-
     if (isCheckinDate || isCheckoutDate) {
       style.textDecoration = 'none';
       style.backgroundColor = 'rgb(0, 166, 153)';
       style.color = 'white';
+    }
+
+    if (number === '') {
+      style.border = 'none';
+      style.backgroundColor = 'white';
+    } else {
+      style.border = 'solid lightgrey';
+      style.borderWidth = 'thin';
     }
 
     if (prevProps.number !== number || prevProps.valid !== valid || prevProps.isCheckinDate !== isCheckinDate || prevProps.isCheckoutDate !== isCheckoutDate) {

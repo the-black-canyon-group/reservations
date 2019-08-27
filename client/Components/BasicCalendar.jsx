@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-update-set-state */
 /* eslint-disable class-methods-use-this */
 /* eslint-disable max-len */
 import React from 'react';
@@ -26,6 +27,25 @@ class BasicCalendar extends React.Component {
     this.nextMonth = this.nextMonth.bind(this);
     this.dateClickHandler = this.dateClickHandler.bind(this);
     this.validDays = [];
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      year, month, checkinDate, checkoutDate,
+    } = this.props;
+    const {
+      year: oldYear, month: oldMonth, checkinDate: oldCheckinDate, checkoutDate: oldCheckoutDate, homestayId,
+    } = prevProps;
+
+    if (year !== oldYear || month !== oldMonth
+      || checkinDate.year !== oldCheckinDate.year
+      || checkoutDate.year !== oldCheckoutDate.year) {
+      this.setState({
+        year,
+        month,
+      });
+      this.getLiveCalendar(year, month, homestayId);
+    }
   }
 
   getLiveCalendar(year, month, homestayId) {
@@ -90,11 +110,51 @@ class BasicCalendar extends React.Component {
                 }
               }
 
-              this.setState({
-                month,
-                year,
-                calendar,
-              });
+              const { checkinDate } = this.props;
+              if (checkinDate.year !== null) {
+                for (let w = 0; w < calendar.length; w += 1) {
+                  for (let d = 0; d < calendar[w].length; d += 1) {
+                    if ((year < checkinDate.year)
+                        || (year === checkinDate.year && month < checkinDate.month)
+                        || (year === checkinDate.year && month === checkinDate.month && parseInt(calendar[w][d].number, 10) <= checkinDate.day)) {
+                      calendar[w][d].valid = false;
+                    }
+                  }
+                }
+              }
+            })
+            .then(() => {
+              const { checkinDate } = this.props;
+              if (checkinDate.year !== null) {
+                this.nextInvalidCheckout(checkinDate, 0)
+                  .then((data) => {
+                    if (data.data.length > 0) {
+                      const resultMonth = parseInt(data.data[0].month, 10) - 1;
+
+                      for (let w = 0; w < calendar.length; w += 1) {
+                        for (let d = 0; d < calendar[w].length; d += 1) {
+                          if ((year > parseInt(data.data[0].year, 10))
+                            || (year === parseInt(data.data[0].year, 10) && month > resultMonth)
+                            || (year === parseInt(data.data[0].year, 10) && month === resultMonth && parseInt(calendar[w][d].number, 10) > parseInt(data.data[0].day, 10))) {
+                            calendar[w][d].valid = false;
+                          }
+                        }
+                      }
+                    }
+
+                    this.setState({
+                      month,
+                      year,
+                      calendar,
+                    });
+                  });
+              } else {
+                this.setState({
+                  month,
+                  year,
+                  calendar,
+                });
+              }
             })
             .catch(() => {
 
@@ -154,6 +214,25 @@ class BasicCalendar extends React.Component {
 
     calendar.push(week);
     return calendar;
+  }
+
+  nextInvalidCheckout(checkinDate, length) {
+    const { year, month, day } = checkinDate;
+    const { homestayId } = this.props;
+
+
+    return Axios.get('/getNextAvailableReservationDate', {
+      header: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        homestayId,
+        year,
+        month: (month === 11 ? 0 : month + 1),
+        day,
+        length,
+      },
+    });
   }
 
   dateClickHandler(e) {
