@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
 import Day from './Day';
@@ -5,7 +6,7 @@ import styles from '../CSS/calendar.css';
 
 function Month(props) {
   const {
-    calendar, monthName, prev, next, year,
+    calendar, monthName, prev, next, year, turnOffPopups, dateClickHandler,
   } = props;
   return (
     <table className={styles.table}>
@@ -29,10 +30,25 @@ function Month(props) {
           <tr>
             {week.map((day) => (
               // create day-component/table-cell for each day
-              <Day number={day.number} valid={day.valid} style={{}} />
+              <Day number={day.number} valid={day.valid} style={{}} dateClickHandler={dateClickHandler} />
             ))}
           </tr>
         ))}
+        <tr>
+          <td colSpan="6" />
+          <td>
+            <div
+              role="button"
+              tabIndex="0"
+              onClick={turnOffPopups}
+              onKeyPress={turnOffPopups}
+              style={{ color: 'rgb(0, 132, 137)' }}
+            >
+              <br />
+                Close
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
   );
@@ -44,6 +60,8 @@ Month.propTypes = {
   prev: PropTypes.func.isRequired,
   next: PropTypes.func.isRequired,
   year: PropTypes.number.isRequired,
+  turnOffPopups: PropTypes.func.isRequired,
+  dateClickHandler: PropTypes.func.isRequired,
 };
 
 export default Month;
