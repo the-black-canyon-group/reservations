@@ -17,7 +17,7 @@ class Day extends React.Component {
     const style = {};
 
     const {
-      valid, number, isCheckinDate, isCheckoutDate,
+      valid, number, isCheckinDate, isCheckoutDate, hightlight,
     } = this.props;
     if (!valid) {
       style.textDecoration = 'line-through';
@@ -49,12 +49,13 @@ class Day extends React.Component {
   }
 
   // Update component if props change
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevStates) {
     const style = {};
 
     const {
-      valid, number, isCheckinDate, isCheckoutDate,
+      valid, number, isCheckinDate, isCheckoutDate, highlight,
     } = this.props;
+
     if (!valid) {
       style.textDecoration = 'line-through';
       style.color = 'lightgrey';
@@ -77,7 +78,12 @@ class Day extends React.Component {
       style.borderWidth = 'thin';
     }
 
-    if (prevProps.number !== number || prevProps.valid !== valid || prevProps.isCheckinDate !== isCheckinDate || prevProps.isCheckoutDate !== isCheckoutDate) {
+    if (highlight) {
+      style.backgroundColor = 'rgb(178,241,236)';
+    }
+
+
+    if (prevStates.style.backgroundColor !== style.backgroundColor || prevProps.number !== number || prevProps.valid !== valid || prevProps.isCheckinDate !== isCheckinDate || prevProps.isCheckoutDate !== isCheckoutDate) {
       this.setTheState(number, valid, style);
     }
   }
@@ -92,7 +98,7 @@ class Day extends React.Component {
 
   render() {
     const { valid, number, style } = this.state;
-    const { dateClickHandler } = this.props;
+    const { dateClickHandler, handleMouseOverDate } = this.props;
 
     return (
       <td style={style} className={valid ? styles.hoverable : ''}>
@@ -103,6 +109,8 @@ class Day extends React.Component {
           }}
           tabIndex="0"
           onClick={dateClickHandler}
+          onMouseOver={valid ? handleMouseOverDate : () => {}}
+          onFocus={valid ? handleMouseOverDate : () => {}}
           onKeyPress={dateClickHandler}
         >
           {number || ''}
@@ -126,6 +134,7 @@ Day.propTypes = {
   dateClickHandler: PropTypes.func.isRequired,
   isCheckoutDate: PropTypes.bool.isRequired,
   isCheckinDate: PropTypes.bool.isRequired,
+  highlight: PropTypes.bool,
 };
 
 Day.defaultProps = {
@@ -136,6 +145,7 @@ Day.defaultProps = {
       textDecoration: '',
     },
   ),
+  highlight: false,
 };
 
 

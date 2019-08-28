@@ -242,7 +242,7 @@ class ReservationBox extends React.Component {
             onKeyUp={this.toggleGuestDropdown}
             tabIndex="0"
           >
-            <span>
+            <span style={showGuestDropdown ? { backgroundColor: 'rgb(153,237,230)', borderRadius: 2 } : { backgroundColor: '', borderRadius: 2 }}>
               {`${guestCount} guest`}
               {(guestCount > 1) ? 's' : ''}
               {(infantCount === 1) ? `, ${infantCount} infant` : ''}

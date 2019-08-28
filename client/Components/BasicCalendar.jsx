@@ -26,6 +26,7 @@ class BasicCalendar extends React.Component {
     this.prevMonth = this.prevMonth.bind(this);
     this.nextMonth = this.nextMonth.bind(this);
     this.dateClickHandler = this.dateClickHandler.bind(this);
+    this.handleMouseOverDate = this.handleMouseOverDate.bind(this);
     this.validDays = [];
   }
 
@@ -47,6 +48,7 @@ class BasicCalendar extends React.Component {
       this.getLiveCalendar(year, month, homestayId);
     }
   }
+
 
   getLiveCalendar(year, month, homestayId) {
     Axios.get('/reservations', {
@@ -216,6 +218,33 @@ class BasicCalendar extends React.Component {
     return calendar;
   }
 
+  handleMouseOverDate(e) {
+    const day = parseInt(e.target.innerHTML, 10);
+    const { type, checkinDate } = this.props;
+    const {
+      month, year, calendar,
+    } = this.state;
+    const calendarCopy = calendar.slice();
+
+    if (type === 'checkout' && !(checkinDate && checkinDate.year === null)) {
+      for (let w = 0; w < calendarCopy.length; w += 1) {
+        for (let d = 0; d < calendarCopy[w].length; d += 1) {
+          if (calendarCopy[w][d].valid && ((year < parseInt(checkinDate.year, 10))
+            || (year === parseInt(checkinDate.year, 10) && month < checkinDate.month)
+            || (year === parseInt(checkinDate.year, 10) && month === checkinDate.month && parseInt(calendarCopy[w][d].number, 10) < day))) {
+            calendarCopy[w][d].highlight = true;
+          } else {
+            calendarCopy[w][d].highlight = false;
+          }
+        }
+      }
+    }
+
+    this.setState({
+      calendar: calendarCopy,
+    });
+  }
+
   nextInvalidCheckout(checkinDate, length) {
     const { year, month, day } = checkinDate;
     const { homestayId } = this.props;
@@ -322,7 +351,7 @@ class BasicCalendar extends React.Component {
           paddingRight: 10,
         }}
       >
-        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} month={month} clearDates={clearDates} dateClickHandler={this.dateClickHandler} checkinDate={checkinDate} checkoutDate={checkoutDate} />
+        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} month={month} clearDates={clearDates} dateClickHandler={this.dateClickHandler} checkinDate={checkinDate} checkoutDate={checkoutDate} handleMouseOverDate={this.handleMouseOverDate} />
       </div>
     );
   }
