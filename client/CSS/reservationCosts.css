@@ -1,0 +1,19 @@
+.thinLine {
+  border: none;
+  height: 1px;
+  color: lightgrey;
+  background-color: lightgrey;
+  margin-top: 5;
+  margin-bottom: 5;
+}
+
+.div {
+  font-family: Helvetica, Arial, sans-serif;
+  font-weight: 100;
+  color: rgb(65,65,65);
+}
+
+.prices {
+  padding-top: 6;
+  padding-bottom: 6;
+}

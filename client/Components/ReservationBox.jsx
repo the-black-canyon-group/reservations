@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import Stars from 'react-star-ratings';
 import BasicCalendar from './BasicCalendar';
 import GuestDropdown from './GuestDropdown';
+import ReservationCosts from './ReservationCosts';
 import styles from '../CSS/reservationBox.css';
 
 class ReservationBox extends React.Component {
@@ -23,7 +24,6 @@ class ReservationBox extends React.Component {
       cleaningFee: 0,
       occupancyFee: 0,
       serviceFee: 0,
-      pageViews: 0,
       reviewCount: 0,
       showCheckIn: false,
       showCheckout: false,
@@ -32,6 +32,7 @@ class ReservationBox extends React.Component {
       checkoutDate: { year: null, month: null, day: null },
       checkinString: 'Check-in',
       checkoutString: 'Checkout',
+      reservationSent: false,
     };
 
     this.checkinRef = React.createRef();
@@ -49,7 +50,7 @@ class ReservationBox extends React.Component {
 
     const { homestayId } = this.props;
 
-    Axios.get('/homestay', {
+    Axios.get('/api/homestay', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -67,7 +68,6 @@ class ReservationBox extends React.Component {
         cleaningFee: homestayInfo.cleaning_fee,
         occupancyFee: homestayInfo.occupancy_fee,
         serviceFee: homestayInfo.service_fee,
-        pageViews: homestayInfo.page_views,
         reviewCount: homestayInfo.review_count,
         checkinDate: { year: null, month: null, day: null },
         checkoutDate: { year: null, month: null, day: null },
@@ -88,6 +88,7 @@ class ReservationBox extends React.Component {
         checkoutString: 'Checkout',
         showCheckout: true,
         showCheckIn: false,
+        reservationSent: false,
       });
     } else {
       this.setState({
@@ -95,6 +96,7 @@ class ReservationBox extends React.Component {
         checkoutString: dateString,
         showCheckIn: (checkinDate.year === null),
         showCheckout: !!((checkinDate.year !== null && checkoutDate.year !== null)),
+        reservationSent: false,
       });
     }
   }
@@ -152,6 +154,35 @@ class ReservationBox extends React.Component {
     });
   }
 
+  sendReservationData() {
+    const {
+      checkinDate, checkoutDate, reservationSent, adultCount, infantCount, childrenCount,
+    } = this.state;
+
+    const { homestayId } = this.props;
+
+    console.log();
+    if (!reservationSent && checkinDate.year !== null && checkoutDate.year !== null) {
+      Axios.post('/api/createReservation', {
+        header: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          homestayId,
+          checkinDate,
+          adultCount,
+          infantCount,
+          childrenCount,
+          checkoutDate,
+        }),
+      }).then(() => {
+        this.setState({
+          reservationSent: true,
+        });
+      });
+    }
+  }
+
   // Track guest counts
   updateGuestCount(num, type) {
     let {
@@ -185,7 +216,7 @@ class ReservationBox extends React.Component {
   render() {
     const { homestayId } = this.props;
     const {
-      rating, price, reviewCount, guestCount, showCheckIn, showCheckout, checkinString, checkoutString, showGuestDropdown, adultCount, childrenCount, infantCount, maxGuests, checkinDate, checkoutDate,
+      reservationSent, rating, price, reviewCount, guestCount, showCheckIn, showCheckout, checkinString, checkoutString, showGuestDropdown, adultCount, childrenCount, infantCount, maxGuests, checkinDate, checkoutDate, cleaningFee, occupancyFee, serviceFee,
     } = this.state;
     return (
       <div
@@ -276,8 +307,17 @@ class ReservationBox extends React.Component {
           </span>
           <div className={styles.popup} style={showGuestDropdown ? { display: '' } : { display: 'none' }}><GuestDropdown adultCount={adultCount} updateGuestCount={this.updateGuestCount} childrenCount={childrenCount} infantCount={infantCount} maxGuests={maxGuests} toggleGuestDropDown={this.toggleGuestDropdown} /></div>
         </div>
-        <div style={{ marginTop: 14 }} className={styles.reserveButton}>Reserve</div>
-        <div style={{ textAlign: 'center', marginTop: 14, marginBottom: 14 }}>You wont be charged for this yet</div>
+        <div style={{ display: (checkinDate.year !== null && checkoutDate.year !== null) ? 'contents' : 'none' }}>
+          {(checkinDate.year !== null && checkoutDate.year !== null) ? <ReservationCosts checkoutDate={checkoutDate} checkinDate={checkinDate} cleaningFee={cleaningFee} occupancyFee={occupancyFee} serviceFee={serviceFee} price={price} /> : <div />}
+        </div>
+        <div role="button" onClick={() => this.sendReservationData()} tabIndex="0" style={{ marginTop: 14, pointerEvents: (reservationSent ? 'none' : '') }} className={styles.reserveButton}>Reserve</div>
+        <div style={{
+          textAlign: 'center', marginTop: 14, marginBottom: 14, fontSize: '12px', fontWeight: 100,
+        }}
+        >
+You wont be charged for this yet
+
+        </div>
       </div>
     );
   }

@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // FORMAT: /homestay/?id=[homestay_id]
 // SAMPLE: http://localhost:3000/homestay/?id=1
-app.get('/homestay', (req, res) => {
+app.get('/api/homestay', (req, res) => {
   const { homestayId } = req.query;
   db.getHomestayById(homestayId)
     .then((data) => {
@@ -18,9 +18,14 @@ app.get('/homestay', (req, res) => {
     });
 });
 
+app.post('/api/createReservation', (req, res) => {
+  console.log(req.body);
+  res.send('received');
+});
+
 // FORMAT: reservations/?id=[homestay_id]&month=[month as int]
 // SAMPLE: http://localhost:3000/reservations/?id=2&month=10
-app.get('/reservations', (req, res) => {
+app.get('/api/reservations', (req, res) => {
   const { month, homestayId, year } = req.query;
   db.getReservationDaysByMonth(homestayId, month, year)
     .then((data) => {
@@ -32,7 +37,7 @@ app.get('/reservations', (req, res) => {
     });
 });
 
-app.get('/getNextAvailableReservationDate', (req, res) => {
+app.get('/api/getNextAvailableReservationDate', (req, res) => {
   const {
     year, month, day, homestayId,
   } = req.query;
