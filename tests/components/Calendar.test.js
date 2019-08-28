@@ -9,6 +9,7 @@ import Month from '../../client/Components/Month';
 import BasicCalendar from '../../client/Components/BasicCalendar';
 import GuestDropdown from '../../client/Components/GuestDropdown';
 import GuestButton from '../../client/Components/GuestButton';
+import ReservationCosts from '../../client/Components/ReservationCosts';
 
 jest.mock('axios');
 
@@ -276,5 +277,13 @@ describe('GuestButton', () => {
     const wrapper = shallow(<GuestButton type="add" updateCounts={mockCallBack} personType={personType} />);
     wrapper.find('button').simulate('click');
     expect(mockCallBack.mock.calls.length).toEqual(1);
+  });
+});
+
+describe('ReservationCosts', () => {
+  it('Render ReservationCosts component', () => {
+    const cleaningFee = 10;
+    const wrapper = shallow(<ReservationCosts cleaningFee={cleaningFee} occupancyFee={20} serviceFee={30} price={40} checkinDate={{ day: 1, month: 2, year: 2019 }} checkoutDate={{ day: 3, month: 2, year: 2019 }} />);
+    expect(wrapper.containsMatchingElement(<span>{`$${cleaningFee}`}</span>)).toBe(true);
   });
 });

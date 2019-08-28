@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1567025675206" clover="3.2.0">
-  <project timestamp="1567025675206" name="All files">
-    <metrics statements="237" coveredstatements="178" conditionals="185" coveredconditionals="104" methods="37" coveredmethods="28" elements="459" coveredelements="310" complexity="0" loc="237" ncloc="237" packages="1" files="5" classes="5"/>
+<coverage generated="1567029507347" clover="3.2.0">
+  <project timestamp="1567029507348" name="All files">
+    <metrics statements="247" coveredstatements="188" conditionals="189" coveredconditionals="107" methods="38" coveredmethods="29" elements="474" coveredelements="324" complexity="0" loc="247" ncloc="247" packages="1" files="6" classes="6"/>
     <file name="BasicCalendar.jsx" path="/Users/jianyeung/HackReactor/reservations/client/Components/BasicCalendar.jsx">
       <metrics statements="151" coveredstatements="102" conditionals="114" coveredconditionals="48" methods="18" coveredmethods="11"/>
       <line num="12" count="7" type="stmt"/>
@@ -253,6 +253,19 @@
       <line num="43" count="0" type="stmt"/>
       <line num="45" count="6" type="stmt"/>
       <line num="69" count="1" type="stmt"/>
+    </file>
+    <file name="ReservationCosts.jsx" path="/Users/jianyeung/HackReactor/reservations/client/Components/ReservationCosts.jsx">
+      <metrics statements="10" coveredstatements="10" conditionals="4" coveredconditionals="3" methods="1" coveredmethods="1"/>
+      <line num="10" count="1" type="stmt"/>
+      <line num="12" count="1" type="stmt"/>
+      <line num="14" count="1" type="cond" truecount="3" falsecount="1"/>
+      <line num="15" count="1" type="stmt"/>
+      <line num="16" count="1" type="stmt"/>
+      <line num="17" count="1" type="stmt"/>
+      <line num="18" count="1" type="stmt"/>
+      <line num="19" count="1" type="stmt"/>
+      <line num="22" count="1" type="stmt"/>
+      <line num="52" count="1" type="stmt"/>
     </file>
   </project>
 </coverage>
