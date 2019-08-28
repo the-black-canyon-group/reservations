@@ -3,6 +3,7 @@
 import React from 'react';
 import Axios from 'axios';
 import PropTypes from 'prop-types';
+import Stars from 'react-star-ratings';
 import BasicCalendar from './BasicCalendar';
 import GuestDropdown from './GuestDropdown';
 import styles from '../CSS/reservationBox.css';
@@ -177,7 +178,7 @@ class ReservationBox extends React.Component {
   render() {
     const { homestayId } = this.props;
     const {
-      price, reviewCount, guestCount, showCheckIn, showCheckout, checkinString, checkoutString, showGuestDropdown, adultCount, childrenCount, infantCount, maxGuests, checkinDate, checkoutDate,
+      rating, price, reviewCount, guestCount, showCheckIn, showCheckout, checkinString, checkoutString, showGuestDropdown, adultCount, childrenCount, infantCount, maxGuests, checkinDate, checkoutDate,
     } = this.state;
     return (
       <div
@@ -190,9 +191,9 @@ class ReservationBox extends React.Component {
           <span className={styles.actualPrice}>{`$${price}`}</span>
           <span className={styles.price}> per night</span>
         </div>
-        <div>
-          <span className={styles.starColor}>★★★★☆</span>
-          <span style={{ fontSize: 10 }}>{` ${reviewCount}`}</span>
+        <div style={{ marginTop: -10 }}>
+          <Stars rating={parseFloat(rating, 10)} starSpacing="0" starRatedColor="rgb(21, 107, 107)" numberOfStars={5} name="rating" starDimension="8px" />
+          <span style={{ fontSize: 10, paddingLeft: '3' }}>{`${reviewCount}`}</span>
         </div>
         <hr className={styles.thinLine} />
         <div style={{ marginTop: 14 }}>Dates</div>
