@@ -49,8 +49,8 @@ class BasicCalendar extends React.Component {
     }
   }
 
-
   getLiveCalendar(year, month, homestayId) {
+    // Get reserved spots for that month
     Axios.get('/reservations', {
       header: {
         'Content-Type': 'application/json',
@@ -62,6 +62,7 @@ class BasicCalendar extends React.Component {
       },
     })
       .then((results) => {
+        // Blackout any day that is reserved
         const { reservations } = results.data;
         const reservedDays = [];
         for (let i = 0; i < reservations.length; i += 1) {
@@ -78,6 +79,7 @@ class BasicCalendar extends React.Component {
             }
           }
 
+          // Increment reserved dates by one for checkout calendar (checkout should be available the day after any checkin date)
           for (let w = 0; w < calendar.length; w += 1) {
             for (let d = 0; d < calendar[w].length; d += 1) {
               if (calendar[w][d].number !== '') {
@@ -88,7 +90,7 @@ class BasicCalendar extends React.Component {
             }
           }
 
-          // Get last month
+          // Get last month (to see if the 1st of the current month should be blacked out)
           const pastMonth = (month === 0) ? 11 : month;
           const pastYear = (month === 0) ? (year - 1) : year;
 
@@ -103,6 +105,7 @@ class BasicCalendar extends React.Component {
             },
           })
             .then((checkoutData) => {
+              // Check to see if the last day of last month is reserved
               const lastDayOfLastMonth = new Date(year, month, 0).getDate();
               if (checkoutData.data.length && checkoutData.data[checkoutData.data.length - 1].day === lastDayOfLastMonth) {
                 for (let d = 0; d < calendar[0].length; d += 1) {
@@ -112,7 +115,8 @@ class BasicCalendar extends React.Component {
                 }
               }
 
-              const { checkinDate } = this.props;
+              // If checkin date has already been set, make sure any day before that date is blocked out
+              const { checkinDate, checkoutDate } = this.props;
               if (checkinDate.year !== null) {
                 for (let w = 0; w < calendar.length; w += 1) {
                   for (let d = 0; d < calendar[w].length; d += 1) {
@@ -123,18 +127,12 @@ class BasicCalendar extends React.Component {
                     }
                   }
                 }
-              }
-            })
-            .then(() => {
-              const { checkinDate, checkoutDate } = this.props;
-              if (checkinDate.year !== null) {
-                console.log(checkinDate);
+
+                // If checkin date has been set, find the next unavailable date. All dates on and after the next available date should be invalid for checkout
                 this.nextInvalidCheckout(checkinDate, 0)
                   .then((data) => {
-                    console.log('DATA:', data.data);
                     if (data.data.length > 0) {
                       const resultMonth = parseInt(data.data[0].month, 10) - 1;
-                      console.log('HIT');
                       for (let w = 0; w < calendar.length; w += 1) {
                         for (let d = 0; d < calendar[w].length; d += 1) {
                           if ((year > parseInt(data.data[0].year, 10))
@@ -146,6 +144,7 @@ class BasicCalendar extends React.Component {
                       }
                     }
 
+                    // If checkin and checkout date have been set, dark highlight the reserved dates
                     if (checkoutDate.year !== null) {
                       for (let w = 0; w < calendar.length; w += 1) {
                         for (let d = 0; d < calendar[w].length; d += 1) {
@@ -175,11 +174,12 @@ class BasicCalendar extends React.Component {
                 });
               }
             })
-            .catch(() => {
-
+            .catch((e) => {
+              console.log('ERROR:', e);
             });
         } else {
           const { checkinDate, checkoutDate } = this.props;
+          // If checkin date has already been set, make sure any day before that date is blocked out
           if (checkoutDate.year !== null && checkinDate.year !== null) {
             for (let w = 0; w < calendar.length; w += 1) {
               for (let d = 0; d < calendar[w].length; d += 1) {
@@ -203,7 +203,7 @@ class BasicCalendar extends React.Component {
           });
         }
 
-
+        // Set available dates for checkin calendar
         for (let w = 0; w < calendar.length; w += 1) {
           for (let d = 0; d < calendar[w].length; d += 1) {
             if (calendar[w][d].valid) {
@@ -212,8 +212,8 @@ class BasicCalendar extends React.Component {
           }
         }
       })
-      .catch(() => {
-
+      .catch((e) => {
+        console.log('ERROR:', e);
       });
   }
 
@@ -252,20 +252,17 @@ class BasicCalendar extends React.Component {
     return calendar;
   }
 
+  // Highlight potentially selected dates if checkin is set and checkout is not set
   handleMouseOverDate(e) {
     const day = parseInt(e.target.innerHTML, 10);
     const { type, checkinDate, checkoutDate } = this.props;
-    const {
-      month, year, calendar,
-    } = this.state;
+    const { calendar } = this.state;
     const calendarCopy = calendar.slice();
 
     if (type === 'checkout' && checkinDate.year !== null && checkoutDate.year === null) {
       for (let w = 0; w < calendarCopy.length; w += 1) {
         for (let d = 0; d < calendarCopy[w].length; d += 1) {
-          if (calendarCopy[w][d].valid && ((year < parseInt(checkinDate.year, 10))
-            || (year === parseInt(checkinDate.year, 10) && month < checkinDate.month)
-            || (year === parseInt(checkinDate.year, 10) && month === checkinDate.month && parseInt(calendarCopy[w][d].number, 10) < day))) {
+          if (calendarCopy[w][d].valid && parseInt(calendarCopy[w][d].number, 10) < day) {
             calendarCopy[w][d].highlight = true;
           } else {
             calendarCopy[w][d].highlight = false;
@@ -279,10 +276,10 @@ class BasicCalendar extends React.Component {
     });
   }
 
+  // Find the next invalid/reserved date
   nextInvalidCheckout(checkinDate, length) {
     const { year, month, day } = checkinDate;
     const { homestayId } = this.props;
-
 
     return Axios.get('/getNextAvailableReservationDate', {
       header: {
@@ -295,6 +292,8 @@ class BasicCalendar extends React.Component {
         day,
         length,
       },
+    }).catch((e) => {
+      console.log('NextInvalidCheckout Error:', e);
     });
   }
 
@@ -322,7 +321,6 @@ class BasicCalendar extends React.Component {
       nextMonth = 0;
       nextYear += 1;
     }
-
     this.updateCalendar(nextYear, nextMonth);
   }
 
@@ -400,14 +398,14 @@ BasicCalendar.propTypes = {
   clearDates: PropTypes.func.isRequired,
   setDate: PropTypes.func.isRequired,
   checkinDate: PropTypes.shape({
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
-    day: PropTypes.number.isRequired,
+    year: PropTypes.number,
+    month: PropTypes.number,
+    day: PropTypes.number,
   }).isRequired,
   checkoutDate: PropTypes.shape({
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
-    day: PropTypes.number.isRequired,
+    year: PropTypes.number,
+    month: PropTypes.number,
+    day: PropTypes.number,
   }).isRequired,
 };
 

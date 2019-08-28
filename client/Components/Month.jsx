@@ -13,11 +13,13 @@ function Month(props) {
       <table className={styles.table}>
         <tbody>
           <tr>
+            {/* PREVIOUS AND NEXT MONTH BUTTONS */}
             <td style={{ border: 'none' }}><input onClick={prev} type="image" name="imgbtn" src="images/prevButton.png" alt="" /></td>
             <td style={{ border: 'none' }} colSpan="5">{`${monthName} ${year}`}</td>
             <td style={{ border: 'none' }}><input onClick={next} type="image" name="imgbtn" src="images/nextButton.png" alt="" /></td>
           </tr>
           <tr>
+            {/* DAY OF WEEK */}
             <td>Su</td>
             <td>Mo</td>
             <td>Tu</td>
@@ -47,13 +49,13 @@ function Month(props) {
         </tbody>
       </table>
       <br />
+      {/* CLEAR DATES BUTTON */}
       <div style={{ float: 'right' }}>
         <span
           role="button"
           tabIndex="0"
           onClick={clearDates}
           onKeyPress={clearDates}
-
           style={{ color: 'rgb(0, 132, 137)' }}
         >
                 Clear dates
@@ -75,14 +77,14 @@ Month.propTypes = {
   dateClickHandler: PropTypes.func.isRequired,
   handleMouseOverDate: PropTypes.func.isRequired,
   checkinDate: PropTypes.shape({
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
-    day: PropTypes.number.isRequired,
+    year: PropTypes.number,
+    month: PropTypes.number,
+    day: PropTypes.number,
   }).isRequired,
   checkoutDate: PropTypes.shape({
-    year: PropTypes.number.isRequired,
-    month: PropTypes.number.isRequired,
-    day: PropTypes.number.isRequired,
+    year: PropTypes.number,
+    month: PropTypes.number,
+    day: PropTypes.number,
   }).isRequired,
   type: PropTypes.string.isRequired,
 };

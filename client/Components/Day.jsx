@@ -14,32 +14,10 @@ class Day extends React.Component {
   }
 
   componentDidMount() {
-    const style = {};
-
+    const style = this.setStyle();
     const {
-      valid, number, isCheckinDate, isCheckoutDate, hightlight,
+      valid, number,
     } = this.props;
-    if (!valid) {
-      style.textDecoration = 'line-through';
-      style.color = 'lightgrey';
-    } else {
-      style.textDecoration = 'none';
-      style.color = 'black';
-    }
-
-    if (isCheckinDate || isCheckoutDate) {
-      style.textDecoration = 'none';
-      style.backgroundColor = 'rgb(0, 166, 153)';
-      style.color = 'white';
-    }
-
-    if (number === '') {
-      style.border = 'none';
-      style.backgroundColor = 'white';
-    } else {
-      style.border = 'solid lightgrey';
-      style.borderWidth = 'thin';
-    }
 
     this.setState({
       number,
@@ -50,34 +28,16 @@ class Day extends React.Component {
 
   // Update component if props change
   componentDidUpdate(prevProps, prevStates) {
-    const style = {};
-
+    const style = this.setStyle();
     const {
-      valid, number, isCheckinDate, isCheckoutDate, highlight, darkHighlight, type,
+      highlight, darkHighlight, type, valid, number, isCheckinDate, isCheckoutDate,
     } = this.props;
 
+    // Prevent click if invalid date
     if (!valid) {
-      style.textDecoration = 'line-through';
-      style.color = 'lightgrey';
       style.pointerEvents = 'none';
     } else {
-      style.textDecoration = 'none';
-      style.color = 'black';
       style.pointerEvents = '';
-    }
-
-    if (isCheckinDate || isCheckoutDate) {
-      style.textDecoration = 'none';
-      style.backgroundColor = 'rgb(0, 166, 153)';
-      style.color = 'white';
-    }
-
-    if (number === '') {
-      style.border = 'none';
-      style.backgroundColor = 'white';
-    } else {
-      style.border = 'solid lightgrey';
-      style.borderWidth = 'thin';
     }
 
     if (highlight) {
@@ -94,6 +54,38 @@ class Day extends React.Component {
     if (prevStates.style.backgroundColor !== style.backgroundColor || prevProps.number !== number || prevProps.valid !== valid || prevProps.isCheckinDate !== isCheckinDate || prevProps.isCheckoutDate !== isCheckoutDate) {
       this.setTheState(number, valid, style);
     }
+  }
+
+  setStyle() {
+    const style = {};
+
+    const {
+      valid, number, isCheckinDate, isCheckoutDate,
+    } = this.props;
+
+    if (!valid) {
+      style.textDecoration = 'line-through';
+      style.color = 'lightgrey';
+    } else {
+      style.textDecoration = 'none';
+      style.color = 'black';
+    }
+
+    if (isCheckinDate || isCheckoutDate) {
+      style.textDecoration = 'none';
+      style.backgroundColor = 'rgb(0, 166, 153)';
+      style.color = 'white';
+    }
+
+    if (number === '') {
+      style.border = 'none';
+      style.backgroundColor = 'white';
+    } else {
+      style.border = 'solid lightgrey';
+      style.borderWidth = 'thin';
+    }
+
+    return style;
   }
 
   setTheState(number, valid, style) {
@@ -123,7 +115,6 @@ class Day extends React.Component {
         >
           {number || ''}
         </div>
-
       </td>
     );
   }
@@ -145,6 +136,7 @@ Day.propTypes = {
   highlight: PropTypes.bool,
   darkHighlight: PropTypes.bool,
   type: PropTypes.string.isRequired,
+  handleMouseOverDate: PropTypes.func.isRequired,
 };
 
 Day.defaultProps = {

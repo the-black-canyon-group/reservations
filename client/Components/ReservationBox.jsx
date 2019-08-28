@@ -109,6 +109,7 @@ class ReservationBox extends React.Component {
     }
   }
 
+  // Toggle display of checkin calendar on and off
   toggleCheckin() {
     const { showCheckIn } = this.state;
     this.setState({
@@ -118,6 +119,7 @@ class ReservationBox extends React.Component {
     });
   }
 
+  // Toggle display of checkout calendar on and off
   toggleCheckout() {
     const { showCheckout } = this.state;
     this.setState({
@@ -127,6 +129,7 @@ class ReservationBox extends React.Component {
     });
   }
 
+  // Reset calendars
   clearDates() {
     this.setState({
       showCheckout: false,
@@ -138,6 +141,7 @@ class ReservationBox extends React.Component {
     });
   }
 
+  // Toggle guest dropdown menu display on and off
   toggleGuestDropdown() {
     const { showGuestDropdown, maxGuests } = this.state;
     this.setState({
@@ -148,6 +152,7 @@ class ReservationBox extends React.Component {
     });
   }
 
+  // Track guest counts
   updateGuestCount(num, type) {
     let {
       guestCount, adultCount, childrenCount, infantCount,
@@ -189,19 +194,23 @@ class ReservationBox extends React.Component {
           paddingTop: 10, paddingBottom: 10, paddingLeft: 20, paddingRight: 20, textAlign: 'left',
         }}
       >
+        {/* PRICE PER NIGHT */}
         <div>
           <span className={styles.actualPrice}>{`$${price}`}</span>
           <span className={styles.price}> per night</span>
         </div>
+        {/* RATINGS */}
         <div style={{ marginTop: -10 }}>
           <Stars rating={parseFloat(rating, 10)} starSpacing="0" starRatedColor="rgb(21, 107, 107)" numberOfStars={5} name="rating" starDimension="8px" />
           <span style={{ fontSize: 10, paddingLeft: '3', color: 'rgb(65,65,65)' }}>{`${reviewCount}`}</span>
         </div>
         <hr className={styles.thinLine} />
         <div style={{ marginTop: 14 }}>Dates</div>
+        {/* CHECKIN/CHECKOUT DATES */}
         <div>
           <table>
             <tbody>
+              {/* CHECKIN CALENDAR COMPONENT */}
               <tr style={{ border: 'solid lightgrey', borderWidth: 'thin' }}>
                 <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkinRef}>
                   <div role="button" tabIndex="0" onClick={this.toggleCheckin.bind(this)} onKeyUp={this.toggleCheckin.bind(this)} className={styles.check} style={showCheckIn ? { backgroundColor: 'rgb(153,237,230)' } : { backgroundColor: '' }}>
@@ -210,6 +219,7 @@ class ReservationBox extends React.Component {
                   <div className={styles.popup} style={!showCheckIn ? { display: 'none' } : { display: 'block' }}><BasicCalendar year={checkinDate.year !== null ? checkinDate.year : this.date.getFullYear()} month={checkinDate.month !== null ? checkinDate.month : this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div>
                 </td>
                 <td><img className={styles.rightArrow} src="images/rightArrow.png" alt="" /></td>
+                {/* CHECKOUT CALENDAR COMPONENT */}
                 <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkoutRef}>
                   <div role="button" tabIndex="0" onClick={this.toggleCheckout.bind(this)} onKeyUp={this.toggleCheckout.bind(this)} className={styles.check} style={showCheckout ? { backgroundColor: 'rgb(153,237,230)' } : { backgroundColor: '' }}>
                     {checkoutString}
@@ -224,6 +234,7 @@ class ReservationBox extends React.Component {
           </table>
         </div>
         <div style={{ marginTop: 14 }}>Guests</div>
+        {/* GUEST COUNTS */}
         <div
           style={{
             border: 'solid lightgrey',
@@ -242,6 +253,7 @@ class ReservationBox extends React.Component {
             onKeyUp={this.toggleGuestDropdown}
             tabIndex="0"
           >
+            {/* GUEST DROPDOWN MENU */}
             <span style={showGuestDropdown ? { backgroundColor: 'rgb(153,237,230)', borderRadius: 2 } : { backgroundColor: '', borderRadius: 2 }}>
               {`${guestCount} guest`}
               {(guestCount > 1) ? 's' : ''}
