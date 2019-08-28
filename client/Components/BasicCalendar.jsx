@@ -126,18 +126,35 @@ class BasicCalendar extends React.Component {
               }
             })
             .then(() => {
-              const { checkinDate } = this.props;
+              const { checkinDate, checkoutDate } = this.props;
               if (checkinDate.year !== null) {
+                console.log(checkinDate);
                 this.nextInvalidCheckout(checkinDate, 0)
                   .then((data) => {
+                    console.log('DATA:', data.data);
                     if (data.data.length > 0) {
                       const resultMonth = parseInt(data.data[0].month, 10) - 1;
-
+                      console.log('HIT');
                       for (let w = 0; w < calendar.length; w += 1) {
                         for (let d = 0; d < calendar[w].length; d += 1) {
                           if ((year > parseInt(data.data[0].year, 10))
                             || (year === parseInt(data.data[0].year, 10) && month > resultMonth)
                             || (year === parseInt(data.data[0].year, 10) && month === resultMonth && parseInt(calendar[w][d].number, 10) > parseInt(data.data[0].day, 10))) {
+                            calendar[w][d].valid = false;
+                          }
+                        }
+                      }
+                    }
+
+                    if (checkoutDate.year !== null) {
+                      for (let w = 0; w < calendar.length; w += 1) {
+                        for (let d = 0; d < calendar[w].length; d += 1) {
+                          if (calendar[w][d].valid && ((year < parseInt(checkoutDate.year, 10))
+                            || (year === parseInt(checkoutDate.year, 10) && month < checkoutDate.month)
+                            || (year === parseInt(checkoutDate.year, 10) && month === checkoutDate.month && parseInt(calendar[w][d].number, 10) < parseInt(checkoutDate.day, 10)))) {
+                            calendar[w][d].darkHighlight = true;
+                          } else {
+                            calendar[w][d].darkHighlight = false;
                             calendar[w][d].valid = false;
                           }
                         }
@@ -162,6 +179,23 @@ class BasicCalendar extends React.Component {
 
             });
         } else {
+          const { checkinDate, checkoutDate } = this.props;
+          if (checkoutDate.year !== null && checkinDate.year !== null) {
+            for (let w = 0; w < calendar.length; w += 1) {
+              for (let d = 0; d < calendar[w].length; d += 1) {
+                if (calendar[w][d].valid && ((year < parseInt(checkoutDate.year, 10))
+                || (year === parseInt(checkoutDate.year, 10) && month < checkoutDate.month)
+                || (year === parseInt(checkoutDate.year, 10) && month === checkoutDate.month && parseInt(calendar[w][d].number, 10) < parseInt(checkoutDate.day, 10)))
+                && ((year > parseInt(checkinDate.year, 10))
+                || (year === parseInt(checkinDate.year, 10) && month > checkinDate.month)
+                || (year === parseInt(checkinDate.year, 10) && month === checkinDate.month && parseInt(calendar[w][d].number, 10) > parseInt(checkinDate.day, 10)))) {
+                  calendar[w][d].darkHighlight = true;
+                } else {
+                  calendar[w][d].darkHighlight = false;
+                }
+              }
+            }
+          }
           this.setState({
             month,
             year,
@@ -220,13 +254,13 @@ class BasicCalendar extends React.Component {
 
   handleMouseOverDate(e) {
     const day = parseInt(e.target.innerHTML, 10);
-    const { type, checkinDate } = this.props;
+    const { type, checkinDate, checkoutDate } = this.props;
     const {
       month, year, calendar,
     } = this.state;
     const calendarCopy = calendar.slice();
 
-    if (type === 'checkout' && !(checkinDate && checkinDate.year === null)) {
+    if (type === 'checkout' && checkinDate.year !== null && checkoutDate.year === null) {
       for (let w = 0; w < calendarCopy.length; w += 1) {
         for (let d = 0; d < calendarCopy[w].length; d += 1) {
           if (calendarCopy[w][d].valid && ((year < parseInt(checkinDate.year, 10))
@@ -257,7 +291,7 @@ class BasicCalendar extends React.Component {
       params: {
         homestayId,
         year,
-        month: (month === 11 ? 0 : month + 1),
+        month: month + 1,
         day,
         length,
       },
@@ -351,7 +385,7 @@ class BasicCalendar extends React.Component {
           paddingRight: 10,
         }}
       >
-        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} month={month} clearDates={clearDates} dateClickHandler={this.dateClickHandler} checkinDate={checkinDate} checkoutDate={checkoutDate} handleMouseOverDate={this.handleMouseOverDate} />
+        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} month={month} clearDates={clearDates} dateClickHandler={this.dateClickHandler} checkinDate={checkinDate} checkoutDate={checkoutDate} handleMouseOverDate={this.handleMouseOverDate} type={type} />
       </div>
     );
   }

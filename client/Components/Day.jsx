@@ -53,15 +53,17 @@ class Day extends React.Component {
     const style = {};
 
     const {
-      valid, number, isCheckinDate, isCheckoutDate, highlight,
+      valid, number, isCheckinDate, isCheckoutDate, highlight, darkHighlight, type,
     } = this.props;
 
     if (!valid) {
       style.textDecoration = 'line-through';
       style.color = 'lightgrey';
+      style.pointerEvents = 'none';
     } else {
       style.textDecoration = 'none';
       style.color = 'black';
+      style.pointerEvents = '';
     }
 
     if (isCheckinDate || isCheckoutDate) {
@@ -80,8 +82,14 @@ class Day extends React.Component {
 
     if (highlight) {
       style.backgroundColor = 'rgb(178,241,236)';
-    }
+    } else if (darkHighlight) {
+      style.backgroundColor = 'rgb(0, 166, 153)';
+      style.color = 'white';
 
+      if (type === 'checkout') {
+        style.pointerEvents = 'none';
+      }
+    }
 
     if (prevStates.style.backgroundColor !== style.backgroundColor || prevProps.number !== number || prevProps.valid !== valid || prevProps.isCheckinDate !== isCheckinDate || prevProps.isCheckoutDate !== isCheckoutDate) {
       this.setTheState(number, valid, style);
@@ -135,6 +143,8 @@ Day.propTypes = {
   isCheckoutDate: PropTypes.bool.isRequired,
   isCheckinDate: PropTypes.bool.isRequired,
   highlight: PropTypes.bool,
+  darkHighlight: PropTypes.bool,
+  type: PropTypes.string.isRequired,
 };
 
 Day.defaultProps = {
@@ -146,6 +156,7 @@ Day.defaultProps = {
     },
   ),
   highlight: false,
+  darkHighlight: false,
 };
 
 
