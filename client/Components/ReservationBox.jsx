@@ -84,7 +84,9 @@ class ReservationBox extends React.Component {
       this.setState({
         checkinDate: { year, month, day },
         checkinString: dateString,
-        showCheckout: (checkoutDate.year === null),
+        checkoutDate: { year: null, month: null, day: null },
+        checkoutString: 'Checkout',
+        showCheckout: true,
         showCheckIn: false,
       });
     } else {
@@ -193,7 +195,7 @@ class ReservationBox extends React.Component {
         </div>
         <div style={{ marginTop: -10 }}>
           <Stars rating={parseFloat(rating, 10)} starSpacing="0" starRatedColor="rgb(21, 107, 107)" numberOfStars={5} name="rating" starDimension="8px" />
-          <span style={{ fontSize: 10, paddingLeft: '3' }}>{`${reviewCount}`}</span>
+          <span style={{ fontSize: 10, paddingLeft: '3', color: 'rgb(65,65,65)' }}>{`${reviewCount}`}</span>
         </div>
         <hr className={styles.thinLine} />
         <div style={{ marginTop: 14 }}>Dates</div>
