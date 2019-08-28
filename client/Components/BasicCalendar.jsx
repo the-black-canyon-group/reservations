@@ -40,6 +40,7 @@ class BasicCalendar extends React.Component {
 
     if (year !== oldYear || month !== oldMonth
       || checkinDate.year !== oldCheckinDate.year
+      || checkinDate.day !== oldCheckinDate.day
       || checkoutDate.year !== oldCheckoutDate.year) {
       this.setState({
         year,
