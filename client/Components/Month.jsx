@@ -6,7 +6,7 @@ import styles from '../CSS/calendar.css';
 
 function Month(props) {
   const {
-    calendar, monthName, prev, next, year, clearDates, dateClickHandler, checkinDate, checkoutDate, month, handleMouseOverDate,
+    type, calendar, monthName, prev, next, year, clearDates, dateClickHandler, checkinDate, checkoutDate, month, handleMouseOverDate,
   } = props;
   return (
     <div style={{ paddingBottom: 10 }}>
@@ -40,7 +40,7 @@ function Month(props) {
                 if (day.number === `${checkoutDate.day}` && checkoutDate.year === year && checkoutDate.month === month) {
                   isCheckoutDate = true;
                 }
-                return (<Day number={day.number} valid={day.valid} style={{}} highlight={day.highlight} dateClickHandler={dateClickHandler} handleMouseOverDate={handleMouseOverDate} isCheckoutDate={isCheckoutDate} isCheckinDate={isCheckinDate} />);
+                return (<Day type={type} number={day.number} valid={day.valid} style={{}} darkHighlight={day.darkHighlight} highlight={day.highlight} dateClickHandler={dateClickHandler} handleMouseOverDate={handleMouseOverDate} isCheckoutDate={isCheckoutDate} isCheckinDate={isCheckinDate} />);
               })}
             </tr>
           ))}
@@ -84,6 +84,7 @@ Month.propTypes = {
     month: PropTypes.number.isRequired,
     day: PropTypes.number.isRequired,
   }).isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default Month;

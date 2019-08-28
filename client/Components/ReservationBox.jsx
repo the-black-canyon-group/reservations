@@ -94,7 +94,7 @@ class ReservationBox extends React.Component {
         checkoutDate: { year, month, day },
         checkoutString: dateString,
         showCheckIn: (checkinDate.year === null),
-        showCheckout: false,
+        showCheckout: !!((checkinDate.year !== null && checkoutDate.year !== null)),
       });
     }
   }
