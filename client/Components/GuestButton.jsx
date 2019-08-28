@@ -6,12 +6,15 @@ class GuestButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      enabled: true,
+      enabled: props.enabled,
     };
   }
 
   render() {
-    const { type, updateCounts, personType } = this.props;
+    const {
+      type, updateCounts, personType, enabled,
+    } = this.props;
+
     return (
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: (type === 'add' ? 0 : 50), marginLeft: (type === 'add' ? 0 : 50),
@@ -20,7 +23,7 @@ class GuestButton extends React.Component {
         <button
           type="button"
           className={styles.button}
-          style={{ textAlign: 'center' }}
+          style={(enabled) ? { textAlign: 'center' } : { textAlign: 'center', color: 'rgba(0,132,137,0.3)', border: '1px solid rgba(0,132,137,0.3)' }}
           onClick={() => { updateCounts((type === 'add' ? 1 : -1), personType); }}
         >
           <span style={{ textAlign: 'center' }}>
