@@ -41,6 +41,7 @@ class BasicCalendar extends React.Component {
     if (year !== oldYear || month !== oldMonth
       || checkinDate.year !== oldCheckinDate.year
       || checkinDate.day !== oldCheckinDate.day
+      || checkoutDate.day !== oldCheckoutDate.day
       || checkoutDate.year !== oldCheckoutDate.year) {
       this.setState({
         year,
@@ -155,7 +156,7 @@ class BasicCalendar extends React.Component {
                             calendar[w][d].darkHighlight = true;
                           } else {
                             calendar[w][d].darkHighlight = false;
-                            calendar[w][d].valid = false;
+                            // calendar[w][d].valid = false;
                           }
                         }
                       }

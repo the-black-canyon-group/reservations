@@ -47,7 +47,7 @@ class Day extends React.Component {
       style.color = 'white';
 
       if (type === 'checkout') {
-        style.pointerEvents = 'none';
+        // style.pointerEvents = 'none';
       }
     }
 
