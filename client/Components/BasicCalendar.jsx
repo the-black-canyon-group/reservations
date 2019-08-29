@@ -27,6 +27,7 @@ class BasicCalendar extends React.Component {
     this.nextMonth = this.nextMonth.bind(this);
     this.dateClickHandler = this.dateClickHandler.bind(this);
     this.handleMouseOverDate = this.handleMouseOverDate.bind(this);
+    this.handleMouseOffDate = this.handleMouseOffDate.bind(this);
     this.validDays = [];
   }
 
@@ -256,7 +257,12 @@ class BasicCalendar extends React.Component {
 
   // Highlight potentially selected dates if checkin is set and checkout is not set
   handleMouseOverDate(e) {
-    const day = parseInt(e.target.innerHTML, 10);
+    let day = parseInt(e.target.innerHTML, 10);
+
+    if (e.target.children.length > 0) {
+      day = parseInt(e.target.children[0].innerHTML, 10);
+    }
+
     const { type, checkinDate, checkoutDate } = this.props;
     const { calendar } = this.state;
     const calendarCopy = calendar.slice();
@@ -264,11 +270,29 @@ class BasicCalendar extends React.Component {
     if (type === 'checkout' && checkinDate.year !== null && checkoutDate.year === null) {
       for (let w = 0; w < calendarCopy.length; w += 1) {
         for (let d = 0; d < calendarCopy[w].length; d += 1) {
-          if (calendarCopy[w][d].valid && parseInt(calendarCopy[w][d].number, 10) < day) {
+          if (calendarCopy[w][d].valid && parseInt(calendarCopy[w][d].number, 10) <= day) {
             calendarCopy[w][d].highlight = true;
           } else {
             calendarCopy[w][d].highlight = false;
           }
+        }
+      }
+    }
+
+    this.setState({
+      calendar: calendarCopy,
+    });
+  }
+
+  handleMouseOffDate() {
+    const { type, checkinDate, checkoutDate } = this.props;
+    const { calendar } = this.state;
+    const calendarCopy = calendar.slice();
+
+    if (type === 'checkout' && checkinDate.year !== null && checkoutDate.year === null) {
+      for (let w = 0; w < calendarCopy.length; w += 1) {
+        for (let d = 0; d < calendarCopy[w].length; d += 1) {
+          calendarCopy[w][d].highlight = false;
         }
       }
     }
@@ -385,7 +409,7 @@ class BasicCalendar extends React.Component {
           paddingRight: 10,
         }}
       >
-        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} month={month} clearDates={clearDates} dateClickHandler={this.dateClickHandler} checkinDate={checkinDate} checkoutDate={checkoutDate} handleMouseOverDate={this.handleMouseOverDate} type={type} />
+        <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} month={month} clearDates={clearDates} dateClickHandler={this.dateClickHandler} checkinDate={checkinDate} checkoutDate={checkoutDate} handleMouseOverDate={this.handleMouseOverDate} type={type} handleMouseOffDate={this.handleMouseOffDate} />
       </div>
     );
   }

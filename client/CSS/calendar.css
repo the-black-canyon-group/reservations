@@ -12,6 +12,7 @@
 } */
 
 table, td {
+  border: 20px solid red;
   border-collapse: collapse;
 }
 
@@ -21,7 +22,7 @@ table, td {
 }
 
 td {
-  border: solid lightgrey;
+  border: 20px solid red;
   border-width: thin;
   display: table-cell;
   vertical-align: middle;
