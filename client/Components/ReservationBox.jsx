@@ -309,7 +309,7 @@ class ReservationBox extends React.Component {
         <div style={{ display: (checkinDate.year !== null && checkoutDate.year !== null) ? 'contents' : 'none' }}>
           {(checkinDate.year !== null && checkoutDate.year !== null) ? <ReservationCosts checkoutDate={checkoutDate} checkinDate={checkinDate} cleaningFee={cleaningFee} occupancyFee={occupancyFee} serviceFee={serviceFee} price={price} /> : <div />}
         </div>
-        <div role="button" onClick={() => this.sendReservationData()} tabIndex="0" style={{ marginTop: 14, pointerEvents: (reservationSent ? 'none' : '') }} className={styles.reserveButton}>Reserve</div>
+        <div role="button" onClick={() => this.sendReservationData()} tabIndex="0" style={{ marginTop: 14, pointerEvents: (reservationSent ? 'none' : ''), background: (reservationSent ? 'grey' : 'rgb(255, 90, 95)') }} className={styles.reserveButton}>Reserve</div>
         <div style={{
           textAlign: 'center', marginTop: 14, marginBottom: 14, fontSize: '12px', fontWeight: 100,
         }}

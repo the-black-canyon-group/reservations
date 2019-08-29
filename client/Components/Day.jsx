@@ -30,7 +30,7 @@ class Day extends React.Component {
   componentDidUpdate(prevProps, prevStates) {
     const style = this.setStyle();
     const {
-      highlight, darkHighlight, type, valid, number, isCheckinDate, isCheckoutDate,
+      highlight, darkHighlight, valid, number, isCheckinDate, isCheckoutDate,
     } = this.props;
 
     // Prevent click if invalid date
@@ -42,13 +42,15 @@ class Day extends React.Component {
 
     if (highlight) {
       style.backgroundColor = 'rgb(178,241,236)';
+      style.color = 'white';
+      style.borderColor = 'rgb(128,232,224)';
     } else if (darkHighlight) {
       style.backgroundColor = 'rgb(0, 166, 153)';
       style.color = 'white';
+    }
 
-      if (type === 'checkout') {
-        // style.pointerEvents = 'none';
-      }
+    if (!highlight) {
+      style.borderColor = 'lightgrey';
     }
 
     if (prevStates.style.backgroundColor !== style.backgroundColor || prevProps.number !== number || prevProps.valid !== valid || prevProps.isCheckinDate !== isCheckinDate || prevProps.isCheckoutDate !== isCheckoutDate) {
@@ -57,7 +59,7 @@ class Day extends React.Component {
   }
 
   setStyle() {
-    const style = {};
+    const style = { borderCollapse: 'collapse', borderSpacing: 0 };
 
     const {
       valid, number, isCheckinDate, isCheckoutDate,
@@ -98,20 +100,24 @@ class Day extends React.Component {
 
   render() {
     const { valid, number, style } = this.state;
-    const { dateClickHandler, handleMouseOverDate } = this.props;
+    const { dateClickHandler, handleMouseOverDate, handleMouseOffDate } = this.props;
 
     return (
-      <td style={style} className={valid ? styles.hoverable : ''}>
+      <td
+        style={style}
+        className={valid && style.backgroundColor !== 'rgb(178,241,236)' ? styles.hoverable : ''}
+        tabIndex="0"
+        onClick={dateClickHandler}
+        onMouseOver={valid ? handleMouseOverDate : () => {}}
+        onMouseLeave={handleMouseOffDate}
+        onFocus={valid ? handleMouseOverDate : () => {}}
+        onKeyPress={dateClickHandler}
+      >
         <div
           role="button"
           style={{
             height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}
-          tabIndex="0"
-          onClick={dateClickHandler}
-          onMouseOver={valid ? handleMouseOverDate : () => {}}
-          onFocus={valid ? handleMouseOverDate : () => {}}
-          onKeyPress={dateClickHandler}
         >
           {number || ''}
         </div>
@@ -135,8 +141,8 @@ Day.propTypes = {
   isCheckinDate: PropTypes.bool.isRequired,
   highlight: PropTypes.bool,
   darkHighlight: PropTypes.bool,
-  type: PropTypes.string.isRequired,
   handleMouseOverDate: PropTypes.func.isRequired,
+  handleMouseOffDate: PropTypes.func.isRequired,
 };
 
 Day.defaultProps = {
