@@ -3,4 +3,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReservationBox from './Components/ReservationBox';
 
-ReactDOM.render(<ReservationBox homestayId={2} />, document.getElementById('app1'));
+const uriParts = document.baseURI.toString().split('/');
+let homestayId = 0;
+if (uriParts.includes('listing') && uriParts.length > 2) {
+  homestayId = uriParts[uriParts.length - 2];
+}
+
+ReactDOM.render(<ReservationBox homestayId={homestayId} />, document.getElementById('app1'));

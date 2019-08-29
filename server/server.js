@@ -4,12 +4,14 @@ const app = express();
 const port = 3000;
 const db = require('../dbHelper/serverDBHelper');
 
-app.use(express.static('public'));
+// app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // FORMAT: /homestay/?id=[homestay_id]
-// SAMPLE: http://localhost:3000/homestay/?id=1
+// SAMPLE: http ://localhost:3000/homestay/?id=1
+app.use('/api/listing/:id', express.static('public'));
+
 app.get('/api/homestay', (req, res) => {
   const { homestayId } = req.query;
   db.getHomestayById(homestayId)

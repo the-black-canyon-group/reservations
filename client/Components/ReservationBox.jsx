@@ -161,8 +161,6 @@ class ReservationBox extends React.Component {
     } = this.state;
 
     const { homestayId } = this.props;
-
-    console.log();
     if (!reservationSent && checkinDate.year !== null && checkoutDate.year !== null) {
       Axios.post('/api/createReservation', {
         header: {
