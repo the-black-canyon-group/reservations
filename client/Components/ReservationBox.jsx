@@ -85,10 +85,8 @@ class ReservationBox extends React.Component {
       this.setState({
         checkinDate: { year, month, day },
         checkinString: dateString,
-        checkoutDate: { year: null, month: null, day: null },
-        checkoutString: 'Checkout',
-        showCheckout: true,
-        showCheckIn: false,
+        showCheckout: (checkoutDate.year === null),
+        showCheckIn: !!((checkoutDate.year !== null && checkinDate.year !== null)),
         reservationSent: false,
       });
     } else {

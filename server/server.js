@@ -45,7 +45,16 @@ app.get('/api/getNextAvailableReservationDate', (req, res) => {
   } = req.query;
   db.getNextAvailableReservationDate(homestayId, year, month, day)
     .then((data) => {
-      console.log(data);
+      res.json(data);
+    });
+});
+
+app.get('/api/getPrevAvailableReservationDate', (req, res) => {
+  const {
+    year, month, day, homestayId,
+  } = req.query;
+  db.getPrevAvailableReservationDate(homestayId, year, month, day)
+    .then((data) => {
       res.json(data);
     });
 });
