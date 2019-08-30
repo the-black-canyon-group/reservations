@@ -27,8 +27,15 @@ const getNextAvailableReservationDate = (id, year, month, day) => {
     .then((data) => data);
 };
 
+const getPrevAvailableReservationDate = (id, year, month, day) => {
+  console.log(`${id}-${year}-${month}-${day}`); return knex('reservations').select(knex.raw('DAY(date) as day, MONTH(date) as month, YEAR(date) as year'))
+    .whereRaw('homestay_id = ? AND date < ? ORDER BY id DESC LIMIT 1', [id, `${year}-${month}-${day}`])
+    .then((data) => data);
+};
+
 module.exports = {
   getReservationDaysByMonth,
   getHomestayById,
   getNextAvailableReservationDate,
+  getPrevAvailableReservationDate,
 };

@@ -198,12 +198,46 @@ class BasicCalendar extends React.Component {
                 }
               }
             }
+            this.setState({
+              month,
+              year,
+              calendar,
+            });
+          } else if (checkoutDate.year !== null) {
+            this.prevInvalidCheckout(checkoutDate)
+              .then((data) => {
+                if (data.data.length > 0) {
+                  const { year: prevInvalidYear, month: prevInvalidMonth, day: prevInvalidDay } = data.data[0];
+                  console.log(data.data[0]);
+                  for (let w = 0; w < calendar.length; w += 1) {
+                    for (let d = 0; d < calendar[w].length; d += 1) {
+                      if ((year < prevInvalidYear)
+                          || (year === prevInvalidYear && month < prevInvalidMonth - 1)
+                          || (year === prevInvalidYear && month === prevInvalidMonth - 1 && parseInt(calendar[w][d].number, 10) <= prevInvalidDay)) {
+                        calendar[w][d].valid = false;
+                      }
+                    }
+                  }
+                  this.setState({
+                    month,
+                    year,
+                    calendar,
+                  });
+                } else {
+                  this.setState({
+                    month,
+                    year,
+                    calendar,
+                  });
+                }
+              });
+          } else {
+            this.setState({
+              month,
+              year,
+              calendar,
+            });
           }
-          this.setState({
-            month,
-            year,
-            calendar,
-          });
         }
 
         // Set available dates for checkin calendar
@@ -264,13 +298,28 @@ class BasicCalendar extends React.Component {
     }
 
     const { type, checkinDate, checkoutDate } = this.props;
-    const { calendar } = this.state;
+    const { calendar, year, month } = this.state;
     const calendarCopy = calendar.slice();
 
     if (type === 'checkout' && checkinDate.year !== null && checkoutDate.year === null) {
       for (let w = 0; w < calendarCopy.length; w += 1) {
         for (let d = 0; d < calendarCopy[w].length; d += 1) {
           if (calendarCopy[w][d].valid && parseInt(calendarCopy[w][d].number, 10) <= day) {
+            calendarCopy[w][d].highlight = true;
+          } else {
+            calendarCopy[w][d].highlight = false;
+          }
+        }
+      }
+    }
+
+    if (type === 'checkin' && checkoutDate.year !== null && checkinDate.year === null) {
+      for (let w = 0; w < calendarCopy.length; w += 1) {
+        for (let d = 0; d < calendarCopy[w].length; d += 1) {
+          if (calendarCopy[w][d].valid && parseInt(calendarCopy[w][d].number, 10) >= day
+          && (year < checkoutDate.year
+            || (year === checkoutDate.year && month < checkoutDate.month)
+            || (year === checkoutDate.year && month === checkoutDate.month && parseInt(calendarCopy[w][d].number, 10) < checkoutDate.day))) {
             calendarCopy[w][d].highlight = true;
           } else {
             calendarCopy[w][d].highlight = false;
@@ -290,6 +339,14 @@ class BasicCalendar extends React.Component {
     const calendarCopy = calendar.slice();
 
     if (type === 'checkout' && checkinDate.year !== null && checkoutDate.year === null) {
+      for (let w = 0; w < calendarCopy.length; w += 1) {
+        for (let d = 0; d < calendarCopy[w].length; d += 1) {
+          calendarCopy[w][d].highlight = false;
+        }
+      }
+    }
+
+    if (type === 'checkin' && checkoutDate.year !== null && checkinDate.year === null) {
       for (let w = 0; w < calendarCopy.length; w += 1) {
         for (let d = 0; d < calendarCopy[w].length; d += 1) {
           calendarCopy[w][d].highlight = false;
@@ -320,6 +377,27 @@ class BasicCalendar extends React.Component {
       },
     }).catch((e) => {
       console.log('NextInvalidCheckout Error:', e);
+    });
+  }
+
+  // Find the prev invalid/reserved date
+  prevInvalidCheckout(checkinDate, length) {
+    const { year, month, day } = checkinDate;
+    const { homestayId } = this.props;
+
+    return Axios.get('/api/getPrevAvailableReservationDate', {
+      header: {
+        'Content-Type': 'application/json',
+      },
+      params: {
+        homestayId,
+        year,
+        month: month + 1,
+        day,
+        length,
+      },
+    }).catch((e) => {
+      console.log('PrevInvalidCheckout Error:', e);
     });
   }
 
