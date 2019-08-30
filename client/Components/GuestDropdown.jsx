@@ -86,27 +86,27 @@ class GuestDropdown extends React.Component {
           <tbody>
             <tr style={{ marginTop: 200 }}>
               <td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7 }}><div className={styles.cell}>Adults</div></td>
-              <td><div className={styles.cell} style={(guestCount <= maxGuests && adultCount > 1) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="adult" /></div></td>
+              <td><div className={styles.cell} style={(guestCount <= maxGuests && adultCount > 1) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="adult" enabled={(guestCount <= maxGuests && adultCount > 1)} /></div></td>
               <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{adultCount}</div></td>
-              <td><div className={styles.cell} style={(guestCount < maxGuests) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="adult" /></div></td>
+              <td><div className={styles.cell} style={(guestCount < maxGuests) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="adult" enabled={(guestCount < maxGuests)} /></div></td>
             </tr>
             <tr>
               <td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7, whiteSpace: 'pre' }}>
                 <div className={styles.cell}>Children</div>
                 <div style={{ fontWeight: '1', color: 'grey' }}>Ages 2-12</div>
               </td>
-              <td><div className={styles.cell} style={(guestCount <= maxGuests && childrenCount > 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="children" /></div></td>
+              <td><div className={styles.cell} style={(guestCount <= maxGuests && childrenCount > 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="children" enabled={(guestCount <= maxGuests && childrenCount > 0)} /></div></td>
               <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{childrenCount}</div></td>
-              <td><div className={styles.cell} style={(guestCount < maxGuests) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="children" /></div></td>
+              <td><div className={styles.cell} style={(guestCount < maxGuests) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="children" enabled={(guestCount < maxGuests)} /></div></td>
             </tr>
             <tr>
               <td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7, whiteSpace: 'pre' }}>
                 <div className={styles.cell}>Infants</div>
                 <div style={{ fontWeight: '1', color: 'grey' }}>Under 2</div>
               </td>
-              <td><div className={styles.cell} style={(infantCount > 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="infant" /></div></td>
+              <td><div className={styles.cell} style={(infantCount > 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="infant" enabled={(infantCount > 0)} /></div></td>
               <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{infantCount}</div></td>
-              <td><div className={styles.cell} style={(infantCount < 5) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="infant" /></div></td>
+              <td><div className={styles.cell} style={(infantCount < 5) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="infant" enabled={(infantCount < 5)} /></div></td>
             </tr>
             <tr>
               <td
