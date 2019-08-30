@@ -410,6 +410,7 @@ class BasicCalendar extends React.Component {
     }
   }
 
+
   updateCalendar(year, month) {
     const { homestayId } = this.props;
     this.getLiveCalendar(year, month, homestayId);

@@ -50,7 +50,8 @@ describe('Day', () => {
     style.textDecoration = 'none';
     style.color = 'black';
     style.boder = 'solid lightgrey';
-    expect(wrapper.html().toString() === '<td style="text-decoration:none;color:white;background-color:white;border:none;pointer-events:" class="hoverable"><div role="button" style="height:100%;display:flex;align-items:center;justify-content:center" tabindex="0"></div></td>').toBe(true);
+    console.log(wrapper.html().toString());
+    expect(wrapper.html().toString() === '<td style="border-collapse:collapse;border-spacing:0;text-decoration:none;color:white;background-color:white;border:none;pointer-events:;border-color:lightgrey" class="hoverable" tabindex="0"><div role="button" style="height:100%;display:flex;align-items:center;justify-content:center"></div></td>').toBe(true);
   });
 
   it('should render day with no number', () => {
@@ -59,7 +60,8 @@ describe('Day', () => {
     style.textDecoration = 'none';
     style.color = 'black';
     style.boder = 'solid lightgrey';
-    expect(wrapper.html().toString() === '<td style="text-decoration:none;color:white;background-color:white;border:none;pointer-events:none" class=""><div role="button" style="height:100%;display:flex;align-items:center;justify-content:center" tabindex="0"></div></td>').toBe(true);
+    console.log(wrapper.html().toString());
+    expect(wrapper.html().toString() === '<td style="border-collapse:collapse;border-spacing:0;text-decoration:none;color:white;background-color:white;border:none;pointer-events:none;border-color:lightgrey" class="" tabindex="0"><div role="button" style="height:100%;display:flex;align-items:center;justify-content:center"></div></td>').toBe(true);
   });
 });
 
@@ -189,7 +191,7 @@ describe('BasicCalendar', () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     axios.get.mockImplementation(() => Promise.resolve({ data: { reservations: [] } }));
-    const wrapper = shallow(<BasicCalendar year={year - 1} month={month} homestayId={homestayId} type="checkout" isPopup clearDates={() => {}} setDate={() => {}} checkinDate={checkinDate} checkoutDate={checkoutDate} />);
+    const wrapper = shallow(<BasicCalendar year={year - 1} month={month} homestayId={homestayId} type="checkin" isPopup clearDates={() => {}} setDate={() => {}} checkinDate={checkinDate} checkoutDate={checkoutDate} />);
     await wrapper.instance().prevMonth();
     expect(wrapper.instance().state.month).toBe(6);
   });
@@ -204,6 +206,23 @@ describe('BasicCalendar', () => {
     axios.get.mockImplementation(() => Promise.resolve({ data: { reservations: [] } }));
     const wrapper = await shallow(<BasicCalendar year={year - 1} month={month} homestayId={homestayId} type="checkout" isPopup clearDates={() => {}} setDate={() => {}} checkinDate={checkinDate} checkoutDate={checkoutDate} />);
     expect(wrapper.instance().props.type).toBe('checkout');
+  });
+
+  it('dates clicker', () => {
+    const {
+      month, homestayId,
+    } = basicCalendarInstance;
+
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    axios.get.mockImplementation(() => Promise.resolve({ data: { reservations: [] } }));
+    const wrapper = shallow(<BasicCalendar year={year - 1} month={month} homestayId={homestayId} type="checkin" isPopup clearDates={() => {}} setDate={() => {}} checkinDate={{ day: 1, month: 1, year: 2019 }} checkoutDate={{ day: 3, month: 1, year: 2019 }} />);
+    wrapper.instance().dateClickHandler({ target: { innerHTML: '10' } });
+    wrapper.instance().isPastDate(2019, 5, 2);
+    console.log(wrapper.instance().state.calendar);
+    wrapper.instance().prevInvalidCheckout({ day: 21, month: 9, year: 2019 }, 0);
+    wrapper.instance().nextInvalidCheckout({ day: 21, month: 9, year: 2019 }, 0);
+    expect(wrapper.instance().state.calendar[1][1].valid).toBe(false);
   });
 });
 
