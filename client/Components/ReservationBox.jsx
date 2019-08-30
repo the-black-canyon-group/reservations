@@ -241,7 +241,18 @@ class ReservationBox extends React.Component {
               {/* CHECKIN CALENDAR COMPONENT */}
               <tr style={{ border: 'solid lightgrey', borderWidth: 'thin' }}>
                 <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkinRef}>
-                  <div role="button" tabIndex="0" onClick={this.toggleCheckin.bind(this)} onKeyUp={this.toggleCheckin.bind(this)} className={styles.check} style={showCheckIn ? { backgroundColor: 'rgb(153,237,230)' } : { backgroundColor: '' }}>
+                  <div
+                    role="button"
+                    tabIndex="0"
+                    onClick={this.toggleCheckin.bind(this)}
+                    onKeyUp={this.toggleCheckin.bind(this)}
+                    className={styles.check}
+                    style={showCheckIn ? {
+                      backgroundColor: 'rgb(153,237,230)', height: '80%', width: '80%', marginLeft: 8, paddingLeft: 2,
+                    } : {
+                      backgroundColor: '', height: '80%', width: '80%', marginLeft: 8, paddingLeft: 2,
+                    }}
+                  >
                     {checkinString}
                   </div>
                   <div className={styles.popup} style={!showCheckIn ? { display: 'none' } : { display: 'block' }}><BasicCalendar year={checkinDate.year !== null ? checkinDate.year : this.date.getFullYear()} month={checkinDate.month !== null ? checkinDate.month : this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div>
@@ -249,7 +260,18 @@ class ReservationBox extends React.Component {
                 <td><img className={styles.rightArrow} src="images/rightArrow.png" alt="" /></td>
                 {/* CHECKOUT CALENDAR COMPONENT */}
                 <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkoutRef}>
-                  <div role="button" tabIndex="0" onClick={this.toggleCheckout.bind(this)} onKeyUp={this.toggleCheckout.bind(this)} className={styles.check} style={showCheckout ? { backgroundColor: 'rgb(153,237,230)' } : { backgroundColor: '' }}>
+                  <div
+                    role="button"
+                    tabIndex="0"
+                    onClick={this.toggleCheckout.bind(this)}
+                    onKeyUp={this.toggleCheckout.bind(this)}
+                    className={styles.check}
+                    style={showCheckout ? {
+                      backgroundColor: 'rgb(153,237,230)', height: '80%', width: '80%', paddingLeft: 2,
+                    } : {
+                      backgroundColor: '', height: '80%', width: '80%', paddingLeft: 2,
+                    }}
+                  >
                     {checkoutString}
                   </div>
                   <div className={styles.popup} style={!showCheckout ? { display: 'none' } : { display: 'block' }} id="calDiv"><BasicCalendar year={checkoutDate.year !== null ? checkoutDate.year : (checkinDate.year !== null ? checkinDate.year : this.date.getFullYear())} month={checkoutDate.month !== null ? checkoutDate.month : (checkinDate.month !== null ? checkinDate.month : this.date.getMonth())} homestayId={homestayId} type="checkout" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div>
