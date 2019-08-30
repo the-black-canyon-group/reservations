@@ -25,9 +25,9 @@
         <span class='fraction'>23/27</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">72.73% </span>
+        <span class="strong">76.92% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>16/22</span>
+        <span class='fraction'>20/26</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -446,27 +446,27 @@ class GuestDropdown extends React.Component {
           &lt;tbody&gt;
             &lt;tr style={{ marginTop: 200 }}&gt;
               &lt;td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7 }}&gt;&lt;div className={styles.cell}&gt;Adults&lt;/div&gt;&lt;/td&gt;
-              &lt;td&gt;&lt;div className={styles.cell} style={(guestCount &lt;= maxGuests &amp;&amp; adultCount &gt; 1) ? { pointerEvents: '' } : { pointerEvents: 'none' }}&gt;&lt;GuestButton type="subtract" updateCounts={this.updateCounts} personType="adult" /&gt;&lt;/div&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;div className={styles.cell} style={(guestCount &lt;= maxGuests &amp;&amp; adultCount &gt; 1) ? { pointerEvents: '' } : { pointerEvents: 'none' }}&gt;&lt;GuestButton type="subtract" updateCounts={this.updateCounts} personType="adult" enabled={(guestCount &lt;= maxGuests &amp;&amp; adultCount &gt; 1)} /&gt;&lt;/div&gt;&lt;/td&gt;
               &lt;td&gt;&lt;div className={styles.cell} style={{ paddingLeft: 10 }}&gt;{adultCount}&lt;/div&gt;&lt;/td&gt;
-              &lt;td&gt;&lt;div className={styles.cell} style={(guestCount &lt; maxGuests) ? { pointerEvents: '' } : <span class="branch-1 cbranch-no" title="branch not covered" >{ pointerEvents: 'none' }}</span>&gt;&lt;GuestButton type="add" updateCounts={this.updateCounts} personType="adult" /&gt;&lt;/div&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;div className={styles.cell} style={(guestCount &lt; maxGuests) ? { pointerEvents: '' } : <span class="branch-1 cbranch-no" title="branch not covered" >{ pointerEvents: 'none' }}</span>&gt;&lt;GuestButton type="add" updateCounts={this.updateCounts} personType="adult" enabled={(guestCount &lt; maxGuests)} /&gt;&lt;/div&gt;&lt;/td&gt;
             &lt;/tr&gt;
             &lt;tr&gt;
               &lt;td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7, whiteSpace: 'pre' }}&gt;
                 &lt;div className={styles.cell}&gt;Children&lt;/div&gt;
                 &lt;div style={{ fontWeight: '1', color: 'grey' }}&gt;Ages 2-12&lt;/div&gt;
               &lt;/td&gt;
-              &lt;td&gt;&lt;div className={styles.cell} style={(guestCount &lt;= maxGuests &amp;&amp; childrenCount &gt; 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}&gt;&lt;GuestButton type="subtract" updateCounts={this.updateCounts} personType="children" /&gt;&lt;/div&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;div className={styles.cell} style={(guestCount &lt;= maxGuests &amp;&amp; childrenCount &gt; 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}&gt;&lt;GuestButton type="subtract" updateCounts={this.updateCounts} personType="children" enabled={(guestCount &lt;= maxGuests &amp;&amp; childrenCount &gt; 0)} /&gt;&lt;/div&gt;&lt;/td&gt;
               &lt;td&gt;&lt;div className={styles.cell} style={{ paddingLeft: 10 }}&gt;{childrenCount}&lt;/div&gt;&lt;/td&gt;
-              &lt;td&gt;&lt;div className={styles.cell} style={(guestCount &lt; maxGuests) ? { pointerEvents: '' } : <span class="branch-1 cbranch-no" title="branch not covered" >{ pointerEvents: 'none' }}</span>&gt;&lt;GuestButton type="add" updateCounts={this.updateCounts} personType="children" /&gt;&lt;/div&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;div className={styles.cell} style={(guestCount &lt; maxGuests) ? { pointerEvents: '' } : <span class="branch-1 cbranch-no" title="branch not covered" >{ pointerEvents: 'none' }}</span>&gt;&lt;GuestButton type="add" updateCounts={this.updateCounts} personType="children" enabled={(guestCount &lt; maxGuests)} /&gt;&lt;/div&gt;&lt;/td&gt;
             &lt;/tr&gt;
             &lt;tr&gt;
               &lt;td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7, whiteSpace: 'pre' }}&gt;
                 &lt;div className={styles.cell}&gt;Infants&lt;/div&gt;
                 &lt;div style={{ fontWeight: '1', color: 'grey' }}&gt;Under 2&lt;/div&gt;
               &lt;/td&gt;
-              &lt;td&gt;&lt;div className={styles.cell} style={(infantCount &gt; 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}&gt;&lt;GuestButton type="subtract" updateCounts={this.updateCounts} personType="infant" /&gt;&lt;/div&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;div className={styles.cell} style={(infantCount &gt; 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}&gt;&lt;GuestButton type="subtract" updateCounts={this.updateCounts} personType="infant" enabled={(infantCount &gt; 0)} /&gt;&lt;/div&gt;&lt;/td&gt;
               &lt;td&gt;&lt;div className={styles.cell} style={{ paddingLeft: 10 }}&gt;{infantCount}&lt;/div&gt;&lt;/td&gt;
-              &lt;td&gt;&lt;div className={styles.cell} style={(infantCount &lt; 5) ? { pointerEvents: '' } : <span class="branch-1 cbranch-no" title="branch not covered" >{ pointerEvents: 'none' }}</span>&gt;&lt;GuestButton type="add" updateCounts={this.updateCounts} personType="infant" /&gt;&lt;/div&gt;&lt;/td&gt;
+              &lt;td&gt;&lt;div className={styles.cell} style={(infantCount &lt; 5) ? { pointerEvents: '' } : <span class="branch-1 cbranch-no" title="branch not covered" >{ pointerEvents: 'none' }}</span>&gt;&lt;GuestButton type="add" updateCounts={this.updateCounts} personType="infant" enabled={(infantCount &lt; 5)} /&gt;&lt;/div&gt;&lt;/td&gt;
             &lt;/tr&gt;
             &lt;tr&gt;
               &lt;td
@@ -520,7 +520,7 @@ export default GuestDropdown;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Aug 28 2019 15:37:04 GMT-0700 (PDT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Aug 30 2019 12:17:20 GMT-0700 (PDT)
 </div>
 </div>
 <script src="prettify.js"></script>

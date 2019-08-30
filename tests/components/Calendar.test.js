@@ -189,7 +189,7 @@ describe('BasicCalendar', () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     axios.get.mockImplementation(() => Promise.resolve({ data: { reservations: [] } }));
-    const wrapper = shallow(<BasicCalendar year={year - 1} month={month} homestayId={homestayId} type="checkin" isPopup clearDates={() => {}} setDate={() => {}} checkinDate={checkinDate} checkoutDate={checkoutDate} />);
+    const wrapper = shallow(<BasicCalendar year={year - 1} month={month} homestayId={homestayId} type="checkout" isPopup clearDates={() => {}} setDate={() => {}} checkinDate={checkinDate} checkoutDate={checkoutDate} />);
     await wrapper.instance().prevMonth();
     expect(wrapper.instance().state.month).toBe(6);
   });
