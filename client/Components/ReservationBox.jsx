@@ -51,7 +51,7 @@ class ReservationBox extends React.Component {
 
     const { homestayId } = this.props;
 
-    Axios.get('http://localhost:3000/api/homestay', {
+    Axios.get('http://localhost:3003/api/homestay', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -161,7 +161,7 @@ class ReservationBox extends React.Component {
 
     const { homestayId } = this.props;
     if (!reservationSent && checkinDate.year !== null && checkoutDate.year !== null) {
-      Axios.post('http://localhost:3000/api/createReservation', {
+      Axios.post('http://localhost:3003/api/createReservation', {
         header: {
           'Content-Type': 'application/json',
         },
@@ -259,7 +259,7 @@ class ReservationBox extends React.Component {
                   </div>
                   <div className={styles.popup} style={!showCheckIn ? { display: 'none' } : { display: 'block' }}><BasicCalendar year={checkinDate.year !== null ? checkinDate.year : this.date.getFullYear()} month={checkinDate.month !== null ? checkinDate.month : this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div>
                 </td>
-                <td><img className={styles.rightArrow} src="http://localhost:3000/images/rightArrow.png" alt="" /></td>
+                <td><img className={styles.rightArrow} src="http://localhost:3003/images/rightArrow.png" alt="" /></td>
                 {/* CHECKOUT CALENDAR COMPONENT */}
                 <td style={{ paddingTop: '3px', paddingBottom: '3px', paddingRight: '3px' }} colSpan="3" ref={this.checkoutRef}>
                   <div

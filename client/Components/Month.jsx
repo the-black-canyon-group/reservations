@@ -14,9 +14,9 @@ function Month(props) {
         <tbody>
           <tr>
             {/* PREVIOUS AND NEXT MONTH BUTTONS */}
-            <td style={{ border: 'none' }}><input onClick={prev} type="image" name="imgbtn" src="http://localhost:3000/images/prevButton.png" alt="" /></td>
+            <td style={{ border: 'none' }}><input onClick={prev} type="image" name="imgbtn" src="http://localhost:3003/images/prevButton.png" alt="" /></td>
             <td style={{ border: 'none' }} colSpan="5">{`${monthName} ${year}`}</td>
-            <td style={{ border: 'none' }}><input onClick={next} type="image" name="imgbtn" src="http://localhost:3000/images/nextButton.png" alt="" /></td>
+            <td style={{ border: 'none' }}><input onClick={next} type="image" name="imgbtn" src="http://localhost:3003/images/nextButton.png" alt="" /></td>
           </tr>
           <tr>
             {/* DAY OF WEEK */}

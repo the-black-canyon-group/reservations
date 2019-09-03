@@ -54,7 +54,7 @@ class BasicCalendar extends React.Component {
 
   getLiveCalendar(year, month, homestayId) {
     // Get reserved spots for that month
-    Axios.get('http://localhost:3000/api/reservations', {
+    Axios.get('http://localhost:3003/api/reservations', {
       header: {
         'Content-Type': 'application/json',
       },
@@ -97,7 +97,7 @@ class BasicCalendar extends React.Component {
           const pastMonth = (month === 0) ? 11 : month;
           const pastYear = (month === 0) ? (year - 1) : year;
 
-          Axios.get('http://localhost:3000/api/reservations', {
+          Axios.get('http://localhost:3003/api/reservations', {
             header: {
               'Content-Type': 'application/json',
             },
@@ -364,7 +364,7 @@ class BasicCalendar extends React.Component {
     const { year, month, day } = checkinDate;
     const { homestayId } = this.props;
 
-    return Axios.get('http://localhost:3000/api/getNextAvailableReservationDate', {
+    return Axios.get('http://localhost:3003/api/getNextAvailableReservationDate', {
       header: {
         'Content-Type': 'application/json',
       },
@@ -385,7 +385,7 @@ class BasicCalendar extends React.Component {
     const { year, month, day } = checkinDate;
     const { homestayId } = this.props;
 
-    return Axios.get('http://localhost:3000/api/getPrevAvailableReservationDate', {
+    return Axios.get('http://localhost:3003/api/getPrevAvailableReservationDate', {
       header: {
         'Content-Type': 'application/json',
       },
