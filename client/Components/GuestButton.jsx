@@ -6,7 +6,7 @@ class GuestButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      enabled: props.enabled,
+
     };
   }
 
@@ -17,7 +17,7 @@ class GuestButton extends React.Component {
 
     return (
       <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: (type === 'add' ? 0 : 50), marginLeft: (type === 'add' ? 0 : 50),
+        display: 'flex', alignItems: 'center', justifyContent: 'center', paddingLeft: (type === 'add' ? 0 : '50px'), marginLeft: (type === 'add' ? 0 : '50px'),
       }}
       >
         <button
@@ -49,6 +49,7 @@ GuestButton.propTypes = {
   type: PropTypes.string.isRequired,
   updateCounts: PropTypes.func.isRequired,
   personType: PropTypes.string.isRequired,
+  enabled: PropTypes.bool.isRequired,
 };
 
 export default GuestButton;

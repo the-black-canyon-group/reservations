@@ -4,8 +4,8 @@ html {
 }
 
 div {
-  margin-top: 5;
-  margin-bottom: 5;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .actualPrice {
@@ -20,7 +20,7 @@ div {
 }
 
 .thinBorder {
-  border: solid lightgrey;
+  border: solid green;
   border-width: thin;
 }
 
@@ -29,12 +29,13 @@ div {
   height: 1px;
   color: lightgrey;
   background-color: lightgrey;
-  margin-top: 5;
-  margin-bottom: 5;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .container {
-  width: 275;
+  width: 275px;
+  /* border: '1px solid red'; */
 }
 
 .starColor {
@@ -56,14 +57,14 @@ td {
   display: table-cell;
   vertical-align: middle;
   text-align: center;
-  height: 35;
+  height: 35px;
   font-size: 80%;
   font-weight: bold;
 }
 
 .rightArrow {
-  width: 35;
-  height: 35;
+  width: 35px;
+  height: 35px;
   background-color: yellow;
   background-image: url('https://icon-library.net/images/thin-arrow-icon/thin-arrow-icon-25.jpg');
 }
@@ -83,8 +84,8 @@ td {
 .guestsSelect {
   /* margin-top: 3; */
   /* margin-bottom: 3; */
-  margin-left: 3;
-  margin-right: 3;
+  margin-left: 3px;
+  margin-right: 3px;
   border-radius: 2px;
   background: white;
   display: flex;
@@ -102,7 +103,7 @@ td {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40;
+  height: 40px;
   color: white;
   font-size: 14;
   /* background: rgb(255, 90, 95); */

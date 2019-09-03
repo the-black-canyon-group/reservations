@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -106,7 +107,6 @@ class Day extends React.Component {
       <td
         style={style}
         className={valid && style.backgroundColor !== 'rgb(178,241,236)' ? styles.hoverable : ''}
-        tabIndex="0"
         onClick={dateClickHandler}
         onMouseOver={valid ? handleMouseOverDate : () => {}}
         onMouseLeave={handleMouseOffDate}

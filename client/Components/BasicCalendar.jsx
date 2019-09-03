@@ -54,7 +54,7 @@ class BasicCalendar extends React.Component {
 
   getLiveCalendar(year, month, homestayId) {
     // Get reserved spots for that month
-    Axios.get('/api/reservations', {
+    Axios.get('http://localhost:3000/api/reservations', {
       header: {
         'Content-Type': 'application/json',
       },
@@ -97,7 +97,7 @@ class BasicCalendar extends React.Component {
           const pastMonth = (month === 0) ? 11 : month;
           const pastYear = (month === 0) ? (year - 1) : year;
 
-          Axios.get('/api/reservations', {
+          Axios.get('http://localhost:3000/api/reservations', {
             header: {
               'Content-Type': 'application/json',
             },
@@ -364,7 +364,7 @@ class BasicCalendar extends React.Component {
     const { year, month, day } = checkinDate;
     const { homestayId } = this.props;
 
-    return Axios.get('/api/getNextAvailableReservationDate', {
+    return Axios.get('http://localhost:3000/api/getNextAvailableReservationDate', {
       header: {
         'Content-Type': 'application/json',
       },
@@ -385,7 +385,7 @@ class BasicCalendar extends React.Component {
     const { year, month, day } = checkinDate;
     const { homestayId } = this.props;
 
-    return Axios.get('/api/getPrevAvailableReservationDate', {
+    return Axios.get('http://localhost:3000/api/getPrevAvailableReservationDate', {
       header: {
         'Content-Type': 'application/json',
       },
@@ -481,11 +481,11 @@ class BasicCalendar extends React.Component {
           left: (type === 'checkin' ? 0 : (-35 * 4 - 15)),
           border: 'solid lightgrey',
           borderWidth: 'thin',
-          width: 250,
-          paddingTop: 10,
-          paddingBottom: 10,
-          paddingLeft: 10,
-          paddingRight: 10,
+          width: '250px',
+          paddingTop: '10px',
+          paddingBottom: '10px',
+          paddingLeft: '10px',
+          paddingRight: '10px',
         }}
       >
         <Month calendar={calendar} monthName={monthName} prev={this.prevMonth} next={this.nextMonth} year={year} month={month} clearDates={clearDates} dateClickHandler={this.dateClickHandler} checkinDate={checkinDate} checkoutDate={checkoutDate} handleMouseOverDate={this.handleMouseOverDate} type={type} handleMouseOffDate={this.handleMouseOffDate} />

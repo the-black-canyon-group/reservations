@@ -51,7 +51,7 @@ class ReservationBox extends React.Component {
 
     const { homestayId } = this.props;
 
-    Axios.get('/api/homestay', {
+    Axios.get('http://localhost:3000/api/homestay', {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -59,6 +59,7 @@ class ReservationBox extends React.Component {
         homestayId,
       },
     }).then((data) => {
+      console.log(data);
       const homestayInfo = data.data[0];
       this.setState({
         price: homestayInfo.price,
@@ -160,7 +161,7 @@ class ReservationBox extends React.Component {
 
     const { homestayId } = this.props;
     if (!reservationSent && checkinDate.year !== null && checkoutDate.year !== null) {
-      Axios.post('/api/createReservation', {
+      Axios.post('http://localhost:3000/api/createReservation', {
         header: {
           'Content-Type': 'application/json',
         },
@@ -215,6 +216,7 @@ class ReservationBox extends React.Component {
     const {
       reservationSent, rating, price, reviewCount, guestCount, showCheckIn, showCheckout, checkinString, checkoutString, showGuestDropdown, adultCount, childrenCount, infantCount, maxGuests, checkinDate, checkoutDate, cleaningFee, occupancyFee, serviceFee,
     } = this.state;
+
     return (
       <div
         className={[styles.container, styles.thinBorder].join(' ')}
@@ -228,19 +230,19 @@ class ReservationBox extends React.Component {
           <span className={styles.price}> per night</span>
         </div>
         {/* RATINGS */}
-        <div style={{ marginTop: -10 }}>
+        <div style={{ marginTop: '-10px' }}>
           <Stars rating={parseFloat(rating, 10)} starSpacing="0" starRatedColor="rgb(21, 107, 107)" numberOfStars={5} name="rating" starDimension="8px" />
           <span style={{ fontSize: 10, paddingLeft: '3', color: 'rgb(65,65,65)' }}>{`${reviewCount}`}</span>
         </div>
         <hr className={styles.thinLine} />
-        <div style={{ marginTop: 14 }}>Dates</div>
+        <div style={{ marginTop: '14px' }}>Dates</div>
         {/* CHECKIN/CHECKOUT DATES */}
         <div>
           <table>
             <tbody>
               {/* CHECKIN CALENDAR COMPONENT */}
               <tr style={{ border: 'solid lightgrey', borderWidth: 'thin' }}>
-                <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkinRef}>
+                <td style={{ paddingTop: '3px', paddingBottom: '3px', paddingRight: '3px' }} colSpan="3" ref={this.checkinRef}>
                   <div
                     role="button"
                     tabIndex="0"
@@ -257,9 +259,9 @@ class ReservationBox extends React.Component {
                   </div>
                   <div className={styles.popup} style={!showCheckIn ? { display: 'none' } : { display: 'block' }}><BasicCalendar year={checkinDate.year !== null ? checkinDate.year : this.date.getFullYear()} month={checkinDate.month !== null ? checkinDate.month : this.date.getMonth()} homestayId={homestayId} type="checkin" isPopup clearDates={this.clearDates} setDate={this.setDate} checkinDate={checkinDate} checkoutDate={checkoutDate} /></div>
                 </td>
-                <td><img className={styles.rightArrow} src="images/rightArrow.png" alt="" /></td>
+                <td><img className={styles.rightArrow} src="http://localhost:3000/images/rightArrow.png" alt="" /></td>
                 {/* CHECKOUT CALENDAR COMPONENT */}
-                <td style={{ paddingTop: 3, paddingBottom: 3, paddingRight: 3 }} colSpan="3" ref={this.checkoutRef}>
+                <td style={{ paddingTop: '3px', paddingBottom: '3px', paddingRight: '3px' }} colSpan="3" ref={this.checkoutRef}>
                   <div
                     role="button"
                     tabIndex="0"
@@ -283,22 +285,22 @@ class ReservationBox extends React.Component {
             </tbody>
           </table>
         </div>
-        <div style={{ marginTop: 14 }}>Guests</div>
+        <div style={{ marginTop: '14px' }}>Guests</div>
         {/* GUEST COUNTS */}
         <div
           style={{
             border: 'solid lightgrey',
             borderWidth: 'thin',
-            height: 30,
-            paddingTop: 5,
-            paddingBottom: 5,
+            height: '30px',
+            paddingTop: '5px',
+            paddingBottom: '5px',
           }}
           ref={this.guestDropdownRef}
         >
           <span
             role="button"
             className={styles.guestsSelect}
-            style={{ paddingLeft: 7, display: 'flex', justifyContent: 'space-between' }}
+            style={{ paddingLeft: '7px', display: 'flex', justifyContent: 'space-between' }}
             onClick={this.toggleGuestDropdown}
             onKeyUp={this.toggleGuestDropdown}
             tabIndex="0"
@@ -310,7 +312,7 @@ class ReservationBox extends React.Component {
               {(infantCount === 1) ? `, ${infantCount} infant` : ''}
               {(infantCount > 1) ? `, ${infantCount} infants` : ''}
             </span>
-            <span style={{ paddingRight: 7 }}>
+            <span style={{ paddingRight: '7px' }}>
               <svg
                 viewBox="0 0 18 18"
                 role="presentation"
@@ -329,9 +331,9 @@ class ReservationBox extends React.Component {
         <div style={{ display: (checkinDate.year !== null && checkoutDate.year !== null) ? 'contents' : 'none' }}>
           {(checkinDate.year !== null && checkoutDate.year !== null) ? <ReservationCosts checkoutDate={checkoutDate} checkinDate={checkinDate} cleaningFee={cleaningFee} occupancyFee={occupancyFee} serviceFee={serviceFee} price={price} /> : <div />}
         </div>
-        <div role="button" onClick={() => this.sendReservationData()} tabIndex="0" style={{ marginTop: 14, pointerEvents: (reservationSent ? 'none' : ''), background: (reservationSent ? 'grey' : 'rgb(255, 90, 95)') }} className={styles.reserveButton}>Reserve</div>
+        <div role="button" onClick={() => this.sendReservationData()} tabIndex="0" style={{ marginTop: '14px', pointerEvents: (reservationSent ? 'none' : ''), background: (reservationSent ? 'grey' : 'rgb(255, 90, 95)') }} className={styles.reserveButton}>Reserve</div>
         <div style={{
-          textAlign: 'center', marginTop: 14, marginBottom: 14, fontSize: '12px', fontWeight: 100,
+          textAlign: 'center', marginTop: '14px', marginBottom: '14px', fontSize: '12px', fontWeight: 100,
         }}
         >
 You wont be charged for this yet

@@ -20,7 +20,7 @@ function ReservationCosts(props) {
   }
 
   return (
-    <div className={styles.div} style={{ paddingBottom: 10, paddingTop: 3 }}>
+    <div className={styles.div} style={{ paddingBottom: '10px', paddingTop: '3px' }}>
       <div className={styles.prices} style={{ display: 'flex', justifyContent: 'space-between' }}>
         <span>{`$${price} x ${nights}`}</span>
         <span>{`$${price * nights}`}</span>

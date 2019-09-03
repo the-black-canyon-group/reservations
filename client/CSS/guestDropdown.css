@@ -1,22 +1,22 @@
 .button {
   border: 1px solid rgb(0, 132, 137);
   color: rgb(0, 132, 137);
-  height: 30;
-  width: 30;
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
   text-align: center;
-  line-height: 1;
+  line-height: 1px;
   position: relative;
   display: inline-block;
 }
 
 .cell {
-  margin-top: 20;
+  margin-top: 20px;
 }
 
 .popupInner { 
   position: relative;  
-  top: 4;
+  top: 4px;
   margin: auto;  
   border-radius: 2px;  
   background: white;  

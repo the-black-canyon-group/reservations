@@ -9,14 +9,14 @@ function Month(props) {
     type, calendar, monthName, prev, next, year, clearDates, dateClickHandler, checkinDate, checkoutDate, month, handleMouseOverDate, handleMouseOffDate,
   } = props;
   return (
-    <div style={{ paddingBottom: 10 }}>
+    <div style={{ paddingBottom: '10px' }}>
       <table className={styles.table}>
         <tbody>
           <tr>
             {/* PREVIOUS AND NEXT MONTH BUTTONS */}
-            <td style={{ border: 'none' }}><input onClick={prev} type="image" name="imgbtn" src="images/prevButton.png" alt="" /></td>
+            <td style={{ border: 'none' }}><input onClick={prev} type="image" name="imgbtn" src="http://localhost:3000/images/prevButton.png" alt="" /></td>
             <td style={{ border: 'none' }} colSpan="5">{`${monthName} ${year}`}</td>
-            <td style={{ border: 'none' }}><input onClick={next} type="image" name="imgbtn" src="images/nextButton.png" alt="" /></td>
+            <td style={{ border: 'none' }}><input onClick={next} type="image" name="imgbtn" src="http://localhost:3000/images/nextButton.png" alt="" /></td>
           </tr>
           <tr>
             {/* DAY OF WEEK */}

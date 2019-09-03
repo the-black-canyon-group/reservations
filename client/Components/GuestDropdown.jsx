@@ -78,41 +78,41 @@ class GuestDropdown extends React.Component {
     return (
       <div
         style={{
-          width: '265', border: 'solid lightgrey', left: -5, borderWidth: 'thin', paddingTop: 10, paddingBottom: 10, paddingLeft: 10, paddingRight: 10,
+          width: '265px', border: 'solid lightgrey', left: '-5px', borderWidth: 'thin', paddingTop: '10px', paddingBottom: '10px', paddingLeft: '10px', paddingRight: '10px',
         }}
         className={[styles.popupInner].join('')}
       >
         <table>
           <tbody>
-            <tr style={{ marginTop: 200 }}>
-              <td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7 }}><div className={styles.cell}>Adults</div></td>
+            <tr style={{ marginTop: '200px' }}>
+              <td colSpan="4" style={{ textAlign: 'left', paddingLeft: '7px' }}><div className={styles.cell}>Adults</div></td>
               <td><div className={styles.cell} style={(guestCount <= maxGuests && adultCount > 1) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="adult" enabled={(guestCount <= maxGuests && adultCount > 1)} /></div></td>
-              <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{adultCount}</div></td>
+              <td><div className={styles.cell} style={{ paddingLeft: '10px' }}>{adultCount}</div></td>
               <td><div className={styles.cell} style={(guestCount < maxGuests) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="adult" enabled={(guestCount < maxGuests)} /></div></td>
             </tr>
             <tr>
-              <td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7, whiteSpace: 'pre' }}>
+              <td colSpan="4" style={{ textAlign: 'left', paddingLeft: '7px', whiteSpace: 'pre' }}>
                 <div className={styles.cell}>Children</div>
                 <div style={{ fontWeight: '1', color: 'grey' }}>Ages 2-12</div>
               </td>
               <td><div className={styles.cell} style={(guestCount <= maxGuests && childrenCount > 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="children" enabled={(guestCount <= maxGuests && childrenCount > 0)} /></div></td>
-              <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{childrenCount}</div></td>
+              <td><div className={styles.cell} style={{ paddingLeft: '10px' }}>{childrenCount}</div></td>
               <td><div className={styles.cell} style={(guestCount < maxGuests) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="children" enabled={(guestCount < maxGuests)} /></div></td>
             </tr>
             <tr>
-              <td colSpan="4" style={{ textAlign: 'left', paddingLeft: 7, whiteSpace: 'pre' }}>
+              <td colSpan="4" style={{ textAlign: 'left', paddingLeft: '7px', whiteSpace: 'pre' }}>
                 <div className={styles.cell}>Infants</div>
                 <div style={{ fontWeight: '1', color: 'grey' }}>Under 2</div>
               </td>
               <td><div className={styles.cell} style={(infantCount > 0) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="subtract" updateCounts={this.updateCounts} personType="infant" enabled={(infantCount > 0)} /></div></td>
-              <td><div className={styles.cell} style={{ paddingLeft: 10 }}>{infantCount}</div></td>
+              <td><div className={styles.cell} style={{ paddingLeft: '10px' }}>{infantCount}</div></td>
               <td><div className={styles.cell} style={(infantCount < 5) ? { pointerEvents: '' } : { pointerEvents: 'none' }}><GuestButton type="add" updateCounts={this.updateCounts} personType="infant" enabled={(infantCount < 5)} /></div></td>
             </tr>
             <tr>
               <td
                 colSpan="6"
                 style={{
-                  textAlign: 'left', paddingLeft: 7, paddingRight: 7, fontWeight: '1', color: 'grey', marginTop: 20,
+                  textAlign: 'left', paddingLeft: '7px', paddingRight: '7px', fontWeight: '1', color: 'grey', marginTop: '20px',
                 }}
               >
                 <br />
