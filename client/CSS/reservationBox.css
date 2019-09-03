@@ -20,7 +20,7 @@ div {
 }
 
 .thinBorder {
-  border: solid green;
+  border: solid lightgrey;
   border-width: thin;
 }
 
