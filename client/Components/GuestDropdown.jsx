@@ -124,7 +124,7 @@ class GuestDropdown extends React.Component {
               <td colSpan="6" />
               <td
                 style={{
-                  paddingRight: '10', color: 'rgb(0, 132, 137)', fontSize: '80%', fontWeight: 'bold',
+                  paddingRight: '10px', color: 'rgb(0, 132, 137)', fontSize: '80%', fontWeight: 'bold',
                 }}
               >
                 <div

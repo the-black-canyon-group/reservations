@@ -35,6 +35,7 @@ div {
 
 .container {
   width: 275px;
+  background-color: white;
   /* border: '1px solid red'; */
 }
 
