@@ -232,7 +232,7 @@ class ReservationBox extends React.Component {
         {/* RATINGS */}
         <div style={{ marginTop: '-10px' }}>
           <Stars rating={parseFloat(rating, 10)} starSpacing="0" starRatedColor="rgb(21, 107, 107)" numberOfStars={5} name="rating" starDimension="8px" />
-          <span style={{ fontSize: 10, paddingLeft: '3', color: 'rgb(65,65,65)' }}>{`${reviewCount}`}</span>
+          <span style={{ fontSize: '10px', paddingLeft: '3', color: 'rgb(65,65,65)' }}>{`${reviewCount}`}</span>
         </div>
         <hr className={styles.thinLine} />
         <div style={{ marginTop: '14px' }}>Dates</div>
